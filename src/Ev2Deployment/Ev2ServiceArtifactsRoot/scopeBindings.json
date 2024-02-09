@@ -1,0 +1,240 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/scopeBindings.json",
+  "scopeBindings": [
+    {
+      "scopeTagName": "AssistedIdentity",
+      "bindings": [
+        {
+          "find": "__ASSISTED_ID_APP_CLIENT_ID__",
+          "replaceWith": "$config(pdg.cloudSharedInfrastructure.assistedId.appId)"
+        },
+        {
+          "find": "__ASSISTED_ID_APP_OBJECT_ID__",
+          "replaceWith": "$config(pdg.cloudSharedInfrastructure.assistedId.objectId)"
+        },
+        {
+          "find": "__ASSISTED_ID_APP_SECRET_URI__",
+          "replaceWith": "$config(pdg.cloudSharedInfrastructure.assistedId.secretUri)"
+        }
+      ]
+    },
+    {
+        "scopeTagName": "Catalog",
+        "bindings": [
+            {
+            "find": "__CATALOG_RESOURCE_GROUP_NAME__",
+            "replaceWith": "$config(catalog.resourceGroupName)"
+            },
+            {
+            "find": "__CATALOG_SUBSCRIPTION_ID__",
+            "replaceWith": "$config(catalog.subscriptionId)"
+            },
+            {
+            "find": "__CATALOG_EVENT_HUB_NAMESPACE_NAME__",
+            "replaceWith": "$config(catalog.eventHubNamespaceName)"
+            }
+        ]
+    },
+    {
+      "scopeTagName": "Certificates",
+      "bindings": [
+        {
+          "find": "__CERTS_CLIENT_CERT_NAME__",
+          "replaceWith": "client-cert"
+        },
+        {
+          "find": "__CERTS_CLIENT_CERT_DOMAIN__",
+          "replaceWith": "health.$config(dnsZoneName)"
+        },
+        {
+          "find": "__CERTS_PRIVATE_ISSUER_NAME__",
+          "replaceWith": "$config(pdg.cloudSharedInfrastructure.certificates.privateIssuerName)"
+        },
+        {
+          "find": "__CERTS_PRIVATE_ISSUER_PROVIDER__",
+          "replaceWith": "$config(pdg.cloudSharedInfrastructure.certificates.privateIssuerProvider)"
+        },
+        {
+          "find": "__CERTS_PUBLIC_ISSUER_NAME__",
+          "replaceWith": "$config(pdg.cloudSharedInfrastructure.certificates.publicIssuerName)"
+        },
+        {
+          "find": "__CERTS_PUBLIC_ISSUER_PROVIDER__",
+          "replaceWith": "$config(pdg.cloudSharedInfrastructure.certificates.publicIssuerProvider)"
+        },
+        {
+          "find": "__CERTS_ARTIFACT_STORE_CERT_NAME__",
+          "replaceWith": "artifactstore-cert"
+        },
+        {
+          "find": "__CERTS_ARTIFACT_STORE_CERT_DOMAIN__",
+          "replaceWith": "health-artifactstore.$config(dnsZoneName)"
+        }
+      ]
+    },
+    {
+        "scopeTagName": "Core",
+        "bindings": [
+            {
+                "find": "__CORE_ACA_ENVIRONMENT_NAME__",
+                "replaceWith": "$config(pdg.regionSharedInfrastructure.acaEnvironmentPrefix)$config(regionShortName)"
+            },
+            {
+                "find": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_DNS_ZONE_NAME__",
+                "replaceWith": "$config(dnsZoneName)"
+            },
+            {
+                "find": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_RESOURCE_GROUP_NAME__",
+                "replaceWith": "$config(pdg.cloudSharedInfrastructure.resourceGroupName)"
+            },
+            {
+                "find": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_SUBSCRIPTION_ID__",
+                "replaceWith": "$config(cloudShareInfrastructureSubscriptionId)"
+            },
+            {
+                "find": "__CORE_RESOURCE_GROUP_NAME__",
+                "replaceWith": "$config(pdg.regionSharedInfrastructure.resourceGroupPrefix)$config(regionName)"
+            },
+            {
+                "find": "__CORE_VNET_NAME__",
+                "replaceWith": "$config(pdg.regionSharedInfrastructure.vnetPrefix)$config(regionShortName)"
+            }
+        ]
+    },
+    {
+        "scopeTagName": "Infrastructure",
+        "bindings": [
+            {
+                "find": "__INFRA_API_SERVICE_CONTAINER_APP_NAME__",
+                "replaceWith": "$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-apiservice-ca"
+            },
+            {
+              "find": "\"__INFRA_API_SERVICE_CONTAINER_APP_READINESS_PORT__\"",
+              "replaceWith": "$config(dgh.apiServiceReadinessProbePort)"
+            },
+            {
+                "find": "__INFRA_API_SERVICE_IMAGE_NAME__",
+                "replaceWith": "$config(serviceShortName)-apiservice"
+            },
+            {
+                "find": "__INFRA_API_SERVICE_SUBDOMAIN_NAME__",
+                "replaceWith": "$config(subdomainName)"
+            },
+            {
+                "find": "__INFRA_COMMON_STORAGE_ACCOUNT_NAME__",
+                "replaceWith": "$config(dgh.commonStorageAccountName)"
+            },
+            {
+                "find": "__INFRA_CONTAINER_APP_IDENTITY_NAME__",
+                "replaceWith": "$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-ca-identity"
+            },
+            {
+                "find": "__INFRA_IMAGE_TAG_NAME__",
+                "replaceWith": "$buildVersion()"
+            },
+            {
+                "find": "__INFRA_JOB_STORAGE_ACCOUNT_NAME__",
+                "replaceWith": "$config(serviceShortName)$config(pdg.environment.shortName)$config(regionShortName)jobs"
+            },
+            {
+                "find": "__INFRA_KEY_VAULT_NAME__",
+                "replaceWith": "$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv"
+            },
+            {
+                "find": "__INFRA_KEY_VAULT_URI__",
+                "replaceWith": "https://$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv.$config(keyVault.domainNameSuffix)"
+            },
+            {
+                "find": "\"__INFRA_PROCESSING_STORAGE_SUBSCRIPTIONS__\"",
+                "replaceWith": "$config(pdg.regionSharedInfrastructure.sharedSubscriptions.storage)"
+            },
+            {
+                "find": "__INFRA_RESOURCE_GROUP_NAME__",
+                "replaceWith": "$config(resourceGroupName)"
+            },
+            {
+                "find": "__INFRA_SUBSCRIPTION_ID__",
+                "replaceWith": "$subscriptionId()"
+            },
+            {
+              "find": "__INFRA_ACR_NAME__",
+              "replaceWith": "$config(dgh.acrName)"
+            },
+            {
+                "find": "__INFRA_WORKER_SERVICE_CONTAINER_APP_NAME__",
+                "replaceWith": "$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-workerservice-ca"
+            },
+            {
+              "find": "\"__INFRA_WORKER_SERVICE_CONTAINER_APP_READINESS_PORT__\"",
+              "replaceWith": "$config(dgh.workerServiceReadinessProbePort)"
+            },
+            {
+                "find": "__INFRA_WORKER_SERVICE_IMAGE_NAME__",
+                "replaceWith": "$config(serviceShortName)-workerservice"
+            },
+            {
+                "find": "__INFRA_SYNAPSE_WORKSPACE_NAME__",
+                "replaceWith": "$config(dgh.synapseWorkspaceName)"
+            },
+            {
+                "find": "__INFRA_SYNAPSE_WORKSPACE_STORAGE_ACCOUNT_NAME__",
+                "replaceWith": "$config(dgh.synapseWorkspaceName)"
+            },
+            {
+                "find": "__INFRA_SYNAPSE_WORKSPACE_STORAGE_ACCOUNT_URL__",
+                "replaceWith": "https://$config(dgh.synapseWorkspaceName).dfs.core.windows.net"
+            },
+            {
+                "find": "__INFRA_SYNAPSE_SPARK_POOL_TABLE_NAME__",
+                "replaceWith": "$config(dgh.sparkPoolTableName)"
+            },
+            {
+                "find": "__INFRA_SYNAPSE_LOCATION__",
+                "replaceWith": "$config(synapseRegion)"
+            },
+            {
+                "find": "__INFRA_CONTAINER_APP_OBJECT_ID__",
+                "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityObjectId.value)"
+            },
+            {
+              "find": "__INFRA_SERVICE_ID__",
+              "replaceWith": "$config(pdg.genevaAccountProvisioning.serviceIds.dgHealth)"
+            },
+            {
+                "find": "__INFRA_SYNAPSE_DB_NAME__",
+                "replaceWith": "dgh$config(pdg.environment.name)db"
+            },
+            {
+                "find": "__INFRA_SQL_ADMIN_USER_SECRET_NAME__",
+                "replaceWith": "$config(dgh.sqlAdminUserSecretName)"
+            },
+            {
+                "find": "__INFRA_SQL_ADMIN_PASS_SECRET_NAME__",
+                "replaceWith": "$config(dgh.sqlAdminPassSecretName)"
+            }
+        ]
+    },
+    {
+      "scopeTagName": "Configuration",
+      "bindings": [
+        {
+          "find": "__CONFIG_APP_SETTINGS_JSON__",
+          "replaceWith": "__REPLACE_APP_SETTINGS_JSON_PLACEHOLDER__"
+        }
+      ]
+    },
+    {
+      "scopeTagName": "ProcessingStorage",
+      "bindings": [
+        {
+          "find": "__PROCESSING_STORAGE_ACCOUNT_NAME__",
+          "replaceWith": "$config(processingStorage.accountName)"
+        },
+        {
+          "find": "__PROCESSING_STORAGE_TABLE_NAME__",
+          "replaceWith": "$config(processingStorage.tableName)"
+        }
+      ]
+    }
+  ]
+}

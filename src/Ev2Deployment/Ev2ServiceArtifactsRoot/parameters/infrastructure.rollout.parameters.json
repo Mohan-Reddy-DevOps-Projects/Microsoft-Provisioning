@@ -1,0 +1,195 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/rolloutParameters.json",
+  "contentVersion": "1.0.0.0",
+  "extensions": [
+    {
+      "name": "RegisterDghPrereqs",
+      "type": "Microsoft.AzureGlobal/ResourceProviderRegistration",
+      "version": "2019-04-01",
+      "connectionProperties": {
+        "maxExecutionTime": "PT24H",
+        "authentication": {
+          "type": "SystemCertificateAuthentication"
+        }
+      },
+      "payloadProperties": {
+        "waitUntilComplete": {
+          "value": true
+        },
+        "resourceProviderNamespaces": {
+          "value": [
+            "Microsoft.Sql"
+          ]
+        }
+      }
+    },
+    {
+      "name": "CreateOneCertV2PublicIssuer",
+      "type": "Microsoft.KeyVault.DataPlane/SetCertificateIssuer",
+      "version": "2020-03-01",
+      "connectionProperties": {
+        "maxExecutionTime": "PT20M",
+        "authentication": {
+          "type": "AadApplicationAuthentication",
+          "reference": {
+            "provider": "AzureKeyVault",
+            "parameters": {
+              "secretId": "__ASSISTED_ID_APP_SECRET_URI__"
+            }
+          },
+          "properties": {
+            "applicationId": "__ASSISTED_ID_APP_CLIENT_ID__"
+          }
+        }
+      },
+      "payloadProperties": {
+        "vaultBaseUrl": {
+          "value": "__INFRA_KEY_VAULT_URI__"
+        },
+        "issuerName": {
+          "value": "__CERTS_PUBLIC_ISSUER_NAME__"
+        },
+        "provider": {
+          "value": "__CERTS_PUBLIC_ISSUER_PROVIDER__"
+        }
+      }
+    },
+    {
+      "name": "CreateOneCertV2PrivateIssuer",
+      "type": "Microsoft.KeyVault.DataPlane/SetCertificateIssuer",
+      "version": "2020-03-01",
+      "connectionProperties": {
+        "maxExecutionTime": "PT20M",
+        "authentication": {
+          "type": "AadApplicationAuthentication",
+          "reference": {
+            "provider": "AzureKeyVault",
+            "parameters": {
+              "secretId": "__ASSISTED_ID_APP_SECRET_URI__"
+            }
+          },
+          "properties": {
+            "applicationId": "__ASSISTED_ID_APP_CLIENT_ID__"
+          }
+        }
+      },
+      "payloadProperties": {
+        "vaultBaseUrl": {
+          "value": "__INFRA_KEY_VAULT_URI__"
+        },
+        "issuerName": {
+          "value": "__CERTS_PRIVATE_ISSUER_NAME__"
+        },
+        "provider": {
+          "value": "__CERTS_PRIVATE_ISSUER_PROVIDER__"
+        }
+      }
+    },
+    {
+      "name": "CreateCertificate-Client",
+      "type": "Microsoft.KeyVault.DataPlane/CreateCertificate",
+      "version": "2020-03-01",
+      "connectionProperties": {
+        "maxExecutionTime": "PT20M",
+        "authentication": {
+          "type": "AadApplicationAuthentication",
+          "reference": {
+            "provider": "AzureKeyVault",
+            "parameters": {
+              "secretId": "__ASSISTED_ID_APP_SECRET_URI__"
+            }
+          },
+          "properties": {
+            "applicationId": "__ASSISTED_ID_APP_CLIENT_ID__"
+          }
+        }
+      },
+      "payloadProperties": {
+        "vaultBaseUrl": {
+          "value": "__INFRA_KEY_VAULT_URI__"
+        },
+        "certificateName": {
+          "value": "__CERTS_CLIENT_CERT_NAME__"
+        },
+        "policy": {
+          "value": "{\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=__CERTS_CLIENT_CERT_DOMAIN__\",\"sans\":{\"dns_names\":[\"__CERTS_CLIENT_CERT_DOMAIN__\"]},\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":24,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"days_before_expiry\":642},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"__CERTS_PRIVATE_ISSUER_NAME__\"}}"
+        },
+        "forceNewVersion": {
+          "value": "false"
+        }
+      }
+    },
+    {
+      "name": "CreateCertificate-ArtifactStore",
+      "type": "Microsoft.KeyVault.DataPlane/CreateCertificate",
+      "version": "2020-03-01",
+      "connectionProperties": {
+        "maxExecutionTime": "PT20M",
+        "authentication": {
+          "type": "AadApplicationAuthentication",
+          "reference": {
+            "provider": "AzureKeyVault",
+            "parameters": {
+              "secretId": "__ASSISTED_ID_APP_SECRET_URI__"
+            }
+          },
+          "properties": {
+            "applicationId": "__ASSISTED_ID_APP_CLIENT_ID__"
+          }
+        }
+      },
+      "payloadProperties": {
+        "vaultBaseUrl": {
+          "value": "__INFRA_KEY_VAULT_URI__"
+        },
+        "certificateName": {
+          "value": "__CERTS_ARTIFACT_STORE_CERT_NAME__"
+        },
+        "policy": {
+          "value": "{\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=__CERTS_ARTIFACT_STORE_CERT_DOMAIN__\",\"sans\":{\"dns_names\":[\"__CERTS_ARTIFACT_STORE_CERT_DOMAIN__\"]},\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":24,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"days_before_expiry\":642},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"__CERTS_PRIVATE_ISSUER_NAME__\"}}"
+        },
+        "forceNewVersion": {
+          "value": "false"
+        }
+      }
+    },
+    {
+      "Name": "ManageSynapseRBAC",
+      "Type": "Microsoft.Azure.Synapse/ManageSynapseRBAC",
+      "Version": "2016-11-01",
+      "ConnectionProperties": {
+        "MaxExecutionTime": "PT1H",
+        "Authentication": {
+          "Type": "SystemCertificateAuthentication"
+        }
+      },
+      "Payloadproperties": {
+        "ClientCertificate": {
+          "reference": {
+            "parameters": {
+              "secretId": "__ASSISTED_ID_APP_SECRET_URI__"
+            },
+            "provider": "AzureKeyVault"
+          }
+        },
+        "ApplicationId": {
+          "Value": "__ASSISTED_ID_APP_CLIENT_ID__"
+        },
+        "SynapseWorkspaceName": {
+          "Value": "__INFRA_SYNAPSE_WORKSPACE_NAME__"
+        },
+        "RoleMapping": {
+          "Value": {"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78": ["__INFRA_CONTAINER_APP_OBJECT_ID__"]}
+        }
+      }
+  }
+  ],
+  "wait": [
+    {
+      "name": "skip",
+      "properties": {
+        "duration": "PT1M"
+      }
+    }
+  ]
+}

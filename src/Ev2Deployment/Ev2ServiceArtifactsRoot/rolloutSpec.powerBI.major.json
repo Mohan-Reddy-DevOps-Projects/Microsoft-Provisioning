@@ -1,0 +1,82 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/RegionAgnosticRolloutSpecification.json",
+  "contentVersion": "1.0.0",
+  "rolloutMetadata": {
+    "serviceModelPath": "ServiceModel.json",
+    "scopeBindingsPath": "ScopeBindings.json",
+    "configuration": {
+      "serviceGroupScope": {
+        "specPath": "config/config.$rolloutInfra().$serviceGroup().json"
+      }
+    },
+    "name": "Microsoft.Azure.PDG.Infrastructure.DataEstateHealth",
+    "rolloutType": "major",
+    "buildSource": {
+      "parameters": {
+        "versionFile": "version.txt"
+      }
+    },
+    "notification": {
+      "email": {
+        "to": "adsDevelopers@microsoft.com"
+      }
+    }
+  },
+    "orchestratedSteps": [
+        {
+            "name": "deployProcessingStorage",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "processingStorageResourceDefinition",
+            "actions": [ "wait/skip" ]
+        },
+        {
+            "name": "deployInfrastructure",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "infrastructureResourceDefinition",
+            "actions": [ "wait/skip" ]
+        },
+        {
+            "name": "deployPowerBIFiles",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "powerBIFilesResourceDefintion",
+            "actions": [ "Shell/Run" ]
+        },
+        {
+            "name": "deployPythonFiles",
+            "dependsOn": [ "deployInfrastructure" ],
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "pythonFilesResourceDefintion",
+            "actions": [ "wait/skip" ]
+        },
+        {
+            "name": "pushApiServiceImage",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "apiServiceImageResourceDefinition",
+            "actions": [ "wait/skip" ]
+        },
+        {
+            "name": "pushWorkerServiceImage",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "workerServiceImageResourceDefinition",
+            "actions": [ "wait/skip" ]
+        },
+        {
+            "name": "addDnsRecords",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "apiServiceContainerAppDnsRecordsResourceDefinition",
+            "actions": [ "wait/skip" ]
+        },
+        {
+            "name": "deployApiService",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "apiServiceContainerAppResourceDefinition",
+            "actions": [ "wait/skip" ]
+        },
+        {
+            "name": "deployWorkerService",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "workerServiceContainerAppResourceDefinition",
+            "actions": [ "wait/skip" ]
+        }
+    ]
+}

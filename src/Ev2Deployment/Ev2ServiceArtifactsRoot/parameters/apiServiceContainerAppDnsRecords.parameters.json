@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "acaEnvironmentName":{
+        "value": "__CORE_ACA_ENVIRONMENT_NAME__"
+      },
+      "acaResourceGroupName": {
+        "value": "__CORE_RESOURCE_GROUP_NAME__"
+      },
+      "containerAppName":{
+        "value": "__INFRA_API_SERVICE_CONTAINER_APP_NAME__"
+      },
+      "dnsZoneName":{
+        "value": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_DNS_ZONE_NAME__"
+      },
+      "dnsZoneResourceGroupName":{
+        "value": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_RESOURCE_GROUP_NAME__"
+      },
+      "dnsZoneSubscriptionId":{
+        "value": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_SUBSCRIPTION_ID__"
+      },
+      "subdomainName":{
+        "value": "__INFRA_API_SERVICE_SUBDOMAIN_NAME__"
+      }
+    }
+  }
+  

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+    "parameters": {
+        "acrName": {
+            "value": "__INFRA_ACR_NAME__"
+        },
+        "assistedIdAppObjectId": {
+            "value": "__ASSISTED_ID_APP_OBJECT_ID__"
+        },
+        "catalogResourceGroupName": {
+            "value": "__CATALOG_RESOURCE_GROUP_NAME__"
+        },
+        "catalogSubscriptionId": {
+            "value": "__CATALOG_SUBSCRIPTION_ID__"
+        },
+        "commonStorageAccountName": {
+            "value": "__INFRA_COMMON_STORAGE_ACCOUNT_NAME__"
+        },
+        "containerAppIdentityName": {
+            "value": "__INFRA_CONTAINER_APP_IDENTITY_NAME__"
+        },
+        "coreResourceGroupName": {
+            "value": "__CORE_RESOURCE_GROUP_NAME__"
+        },
+        "eventHubNamespaceName": {
+            "value": "__CATALOG_EVENT_HUB_NAMESPACE_NAME__"
+        },
+        "jobStorageAccountName": {
+            "value": "__INFRA_JOB_STORAGE_ACCOUNT_NAME__"
+        },
+        "keyVaultName": {
+            "value": "__INFRA_KEY_VAULT_NAME__"
+        },
+        "processingStorageSubscriptions": {
+            "value": "__INFRA_PROCESSING_STORAGE_SUBSCRIPTIONS__"
+        },
+        "vnetName": {
+            "value": "__CORE_VNET_NAME__"
+        },
+        "synapseWorkspaceName": {
+            "value": "__INFRA_SYNAPSE_WORKSPACE_NAME__"
+        },
+        "synapseStorageAccountName": {
+            "value": "__INFRA_SYNAPSE_WORKSPACE_STORAGE_ACCOUNT_NAME__"
+        },
+        "synapseStorageAccountUrl": {
+            "value": "__INFRA_SYNAPSE_WORKSPACE_STORAGE_ACCOUNT_URL__"
+        },
+        "sparkPoolTableName": {
+            "value": "__INFRA_SYNAPSE_SPARK_POOL_TABLE_NAME__"
+        },
+        "synapseLocation": {
+            "value": "__INFRA_SYNAPSE_LOCATION__"
+        },
+        "synapseDatabaseName": {
+            "value": "__INFRA_SYNAPSE_DB_NAME__"
+        },
+        "sqlAdminUserSecretName": {
+            "value": "__INFRA_SQL_ADMIN_USER_SECRET_NAME__"
+        },
+        "sqlAdminPassSecretName": {
+            "value": "__INFRA_SQL_ADMIN_PASS_SECRET_NAME__"
+        }
+    }
+}

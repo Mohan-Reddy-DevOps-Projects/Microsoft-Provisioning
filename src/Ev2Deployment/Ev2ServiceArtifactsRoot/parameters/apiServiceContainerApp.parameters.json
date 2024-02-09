@@ -1,0 +1,46 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "acaEnvironmentName":{
+        "value": "__CORE_ACA_ENVIRONMENT_NAME__"
+      },
+      "acaResourceGroupName": {
+        "value": "__CORE_RESOURCE_GROUP_NAME__"
+      },
+      "acrName":{
+        "value": "__INFRA_ACR_NAME__"
+      },
+      "appSettingsJson":{
+        "value": "__CONFIG_APP_SETTINGS_JSON__"
+      },
+      "containerAppIdentityName":{
+        "value": "__INFRA_CONTAINER_APP_IDENTITY_NAME__"
+      },
+      "containerAppName":{
+        "value": "__INFRA_API_SERVICE_CONTAINER_APP_NAME__"
+      },
+      "readinessPort":{
+        "value": "__INFRA_API_SERVICE_CONTAINER_APP_READINESS_PORT__"
+      },
+      "dnsZoneName":{
+        "value": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_DNS_ZONE_NAME__"
+      },
+      "externalIngress":{
+        "value": true
+      },
+      "imageName":{
+        "value": "__INFRA_API_SERVICE_IMAGE_NAME__"
+      },
+      "imageTagName":{
+        "value": "__INFRA_IMAGE_TAG_NAME__"
+      },
+      "subdomainName":{
+        "value": "__INFRA_API_SERVICE_SUBDOMAIN_NAME__"
+      },
+      "serviceId":{
+        "value": "__INFRA_SERVICE_ID__"
+      }
+    }
+  }
+  
