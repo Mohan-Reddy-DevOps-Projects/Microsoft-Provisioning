@@ -30,7 +30,7 @@ public static class DataAccessLayer
 
     private static readonly TimeSpan OverallTimeoutSeconds = TimeSpan.FromSeconds(100);
 
-    private const string DefaultUserAgent = "DGHealth";
+    private const string DefaultUserAgent = "DGProvisioning";
 
     /// <summary>
     /// Initializes the data access layer.

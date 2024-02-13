@@ -163,6 +163,11 @@ public interface IRequestHeaderContext
     public PurviewAccountSku PurviewAccountSku { get; set; }
 
     /// <summary>
+    /// The IP of the client for logging purposes.
+    /// </summary>
+    string ClientIpAddress { get; set; }
+
+    /// <summary>
     /// Set Correlation Id in Request Context
     /// </summary>
     /// <param name="correlationId"></param>

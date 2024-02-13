@@ -38,7 +38,7 @@ public static class Extension
         HttpClientSettings httpClientSettings = new()
         {
             Name = name,
-            UserAgent = "DGHealth",
+            UserAgent = "DGProvisioning",
             RetryCount = 5
         };
 

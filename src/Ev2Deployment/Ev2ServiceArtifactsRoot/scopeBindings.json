@@ -19,23 +19,6 @@
       ]
     },
     {
-        "scopeTagName": "Catalog",
-        "bindings": [
-            {
-            "find": "__CATALOG_RESOURCE_GROUP_NAME__",
-            "replaceWith": "$config(catalog.resourceGroupName)"
-            },
-            {
-            "find": "__CATALOG_SUBSCRIPTION_ID__",
-            "replaceWith": "$config(catalog.subscriptionId)"
-            },
-            {
-            "find": "__CATALOG_EVENT_HUB_NAMESPACE_NAME__",
-            "replaceWith": "$config(catalog.eventHubNamespaceName)"
-            }
-        ]
-    },
-    {
       "scopeTagName": "Certificates",
       "bindings": [
         {
@@ -44,7 +27,7 @@
         },
         {
           "find": "__CERTS_CLIENT_CERT_DOMAIN__",
-          "replaceWith": "health.$config(dnsZoneName)"
+          "replaceWith": "provision.$config(pdg.tenant.dnsZoneName)"
         },
         {
           "find": "__CERTS_PRIVATE_ISSUER_NAME__",
@@ -61,14 +44,6 @@
         {
           "find": "__CERTS_PUBLIC_ISSUER_PROVIDER__",
           "replaceWith": "$config(pdg.cloudSharedInfrastructure.certificates.publicIssuerProvider)"
-        },
-        {
-          "find": "__CERTS_ARTIFACT_STORE_CERT_NAME__",
-          "replaceWith": "artifactstore-cert"
-        },
-        {
-          "find": "__CERTS_ARTIFACT_STORE_CERT_DOMAIN__",
-          "replaceWith": "health-artifactstore.$config(dnsZoneName)"
         }
       ]
     },
@@ -81,7 +56,7 @@
             },
             {
                 "find": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_DNS_ZONE_NAME__",
-                "replaceWith": "$config(dnsZoneName)"
+                "replaceWith": "$config(pdg.tenant.dnsZoneName)"
             },
             {
                 "find": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_RESOURCE_GROUP_NAME__",
@@ -89,11 +64,11 @@
             },
             {
                 "find": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_SUBSCRIPTION_ID__",
-                "replaceWith": "$config(cloudShareInfrastructureSubscriptionId)"
+                "replaceWith": "$config(pdg.cloudShareInfrastructureSubscriptionId)"
             },
             {
                 "find": "__CORE_RESOURCE_GROUP_NAME__",
-                "replaceWith": "$config(pdg.regionSharedInfrastructure.resourceGroupPrefix)$config(regionName)"
+                "replaceWith": "$config(pdg.regionSharedInfrastructure.resourceGroupPrefixes.sharedInfra)$config(regionName)"
             },
             {
                 "find": "__CORE_VNET_NAME__",
@@ -106,43 +81,35 @@
         "bindings": [
             {
                 "find": "__INFRA_API_SERVICE_CONTAINER_APP_NAME__",
-                "replaceWith": "$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-apiservice-ca"
+                "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-apiservice-ca"
             },
             {
               "find": "\"__INFRA_API_SERVICE_CONTAINER_APP_READINESS_PORT__\"",
-              "replaceWith": "$config(dgh.apiServiceReadinessProbePort)"
+              "replaceWith": "$config(dgprov.apiServiceReadinessProbePort)"
             },
             {
                 "find": "__INFRA_API_SERVICE_IMAGE_NAME__",
-                "replaceWith": "$config(serviceShortName)-apiservice"
+                "replaceWith": "$config(dgprov.serviceShortName)-apiservice"
             },
             {
                 "find": "__INFRA_API_SERVICE_SUBDOMAIN_NAME__",
-                "replaceWith": "$config(subdomainName)"
-            },
-            {
-                "find": "__INFRA_COMMON_STORAGE_ACCOUNT_NAME__",
-                "replaceWith": "$config(dgh.commonStorageAccountName)"
+                "replaceWith": "$config(dgprov.subdomainName)"
             },
             {
                 "find": "__INFRA_CONTAINER_APP_IDENTITY_NAME__",
-                "replaceWith": "$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-ca-identity"
+                "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-ca-identity"
             },
             {
                 "find": "__INFRA_IMAGE_TAG_NAME__",
                 "replaceWith": "$buildVersion()"
             },
             {
-                "find": "__INFRA_JOB_STORAGE_ACCOUNT_NAME__",
-                "replaceWith": "$config(serviceShortName)$config(pdg.environment.shortName)$config(regionShortName)jobs"
-            },
-            {
                 "find": "__INFRA_KEY_VAULT_NAME__",
-                "replaceWith": "$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv"
+                "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv"
             },
             {
                 "find": "__INFRA_KEY_VAULT_URI__",
-                "replaceWith": "https://$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv.$config(keyVault.domainNameSuffix)"
+                "replaceWith": "https://$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv.$config(keyVault.domainNameSuffix)"
             },
             {
                 "find": "\"__INFRA_PROCESSING_STORAGE_SUBSCRIPTIONS__\"",
@@ -150,7 +117,7 @@
             },
             {
                 "find": "__INFRA_RESOURCE_GROUP_NAME__",
-                "replaceWith": "$config(resourceGroupName)"
+                "replaceWith": "$config(dgprov.resourceGroupName)"
             },
             {
                 "find": "__INFRA_SUBSCRIPTION_ID__",
@@ -158,59 +125,15 @@
             },
             {
               "find": "__INFRA_ACR_NAME__",
-              "replaceWith": "$config(dgh.acrName)"
+              "replaceWith": "$config(dgprov.acrName)"
             },
             {
-                "find": "__INFRA_WORKER_SERVICE_CONTAINER_APP_NAME__",
-                "replaceWith": "$config(serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-workerservice-ca"
+              "find": "__INFRA_CONTAINER_APP_CLIENT_ID__",
+              "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityClientId.value)"
             },
             {
-              "find": "\"__INFRA_WORKER_SERVICE_CONTAINER_APP_READINESS_PORT__\"",
-              "replaceWith": "$config(dgh.workerServiceReadinessProbePort)"
-            },
-            {
-                "find": "__INFRA_WORKER_SERVICE_IMAGE_NAME__",
-                "replaceWith": "$config(serviceShortName)-workerservice"
-            },
-            {
-                "find": "__INFRA_SYNAPSE_WORKSPACE_NAME__",
-                "replaceWith": "$config(dgh.synapseWorkspaceName)"
-            },
-            {
-                "find": "__INFRA_SYNAPSE_WORKSPACE_STORAGE_ACCOUNT_NAME__",
-                "replaceWith": "$config(dgh.synapseWorkspaceName)"
-            },
-            {
-                "find": "__INFRA_SYNAPSE_WORKSPACE_STORAGE_ACCOUNT_URL__",
-                "replaceWith": "https://$config(dgh.synapseWorkspaceName).dfs.core.windows.net"
-            },
-            {
-                "find": "__INFRA_SYNAPSE_SPARK_POOL_TABLE_NAME__",
-                "replaceWith": "$config(dgh.sparkPoolTableName)"
-            },
-            {
-                "find": "__INFRA_SYNAPSE_LOCATION__",
-                "replaceWith": "$config(synapseRegion)"
-            },
-            {
-                "find": "__INFRA_CONTAINER_APP_OBJECT_ID__",
-                "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityObjectId.value)"
-            },
-            {
-              "find": "__INFRA_SERVICE_ID__",
-              "replaceWith": "$config(pdg.genevaAccountProvisioning.serviceIds.dgHealth)"
-            },
-            {
-                "find": "__INFRA_SYNAPSE_DB_NAME__",
-                "replaceWith": "dgh$config(pdg.environment.name)db"
-            },
-            {
-                "find": "__INFRA_SQL_ADMIN_USER_SECRET_NAME__",
-                "replaceWith": "$config(dgh.sqlAdminUserSecretName)"
-            },
-            {
-                "find": "__INFRA_SQL_ADMIN_PASS_SECRET_NAME__",
-                "replaceWith": "$config(dgh.sqlAdminPassSecretName)"
+              "find": "__INFRA_GENEVA_ERROR_LOG_TABLE_ID__",
+              "replaceWith": "$config(pdg.genevaAccountProvisioning.genevaLogTableIds.dgProvision-errorLog)"
             }
         ]
     },
@@ -228,11 +151,11 @@
       "bindings": [
         {
           "find": "__PROCESSING_STORAGE_ACCOUNT_NAME__",
-          "replaceWith": "$config(processingStorage.accountName)"
+          "replaceWith": "$config(pdg.processingStorage.accountName)"
         },
         {
           "find": "__PROCESSING_STORAGE_TABLE_NAME__",
-          "replaceWith": "$config(processingStorage.tableName)"
+          "replaceWith": "$config(pdg.processingStorage.tableName)"
         }
       ]
     }

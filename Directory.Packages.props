@@ -48,7 +48,6 @@
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.55.0" />
     <PackageVersion Include="Microsoft.Identity.ServerAuthorization" Version="4.0.5" />
-    <PackageVersion Include="Microsoft.PowerBI.Api" Version="4.18.0" />
     <PackageVersion Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageVersion Include="Microsoft.WindowsAzure.ResourceStack" Version="6.0.0.1318" />

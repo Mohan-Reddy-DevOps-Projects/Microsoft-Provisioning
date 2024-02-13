@@ -100,6 +100,7 @@ public class RequestHeaderContext : IRequestHeaderContext
             httpContextAccessor?.HttpContext?.Request?.Headers.GetFirstOrDefault(
                 HeaderClientPuid);
 
+        this.ClientIpAddress = httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress.ToString() ?? "0.0.0.0";
         this.AuthorizationObligationType =
             headers.GetFirstOrDefault(HeaderAccountObligationType);
         this.AuthorizationObligations = headers.GetFirstOrDefault(HeaderAccountObligations);
@@ -190,6 +191,9 @@ public class RequestHeaderContext : IRequestHeaderContext
 
     /// <inheritdoc />
     public string ClientPuid { get; set; }
+
+    /// <inheritdoc />
+    public string ClientIpAddress { get; set; }
 
     /// <inheritdoc />
     public string AuthorizationObligationType { get; set; }

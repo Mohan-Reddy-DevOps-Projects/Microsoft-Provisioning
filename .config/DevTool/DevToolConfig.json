@@ -1,6 +1,6 @@
 {
    "JsonCommandConfigPath": "DevToolCustomRepoCommands.json",
-   "CustomHelpIntroText": "Welcome to the Data Estate Health repository",
+   "CustomHelpIntroText": "Welcome to the DG Provisioning repository",
    "DevMinimumVersion" : "1.0.0.0",
    "Owner" : "pdginfrastructureeng@microsoft.com"
 }

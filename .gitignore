@@ -334,8 +334,3 @@ ASALocalRun/
 coveragetool
 reports/
 *.cobertura.xml
-
-# Python autogen folders
-src/Python/DataEstateHealthLibrary.egg-info
-src/Python/dist
-src/Python/build

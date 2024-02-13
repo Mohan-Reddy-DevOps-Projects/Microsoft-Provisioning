@@ -1,0 +1,53 @@
+{
+    "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/RegionAgnosticRolloutSpecification.json",
+    "contentVersion": "1.0.0",
+    "rolloutMetadata": {
+      "serviceModelPath": "ServiceModel.json",
+      "scopeBindingsPath": "ScopeBindings.json",
+      "configuration": {
+        "serviceGroupScope": {
+          "specPath": "config/config.$rolloutInfra().$serviceGroup().json"
+        }
+      },
+      "name": "Microsoft.Purview.PDG.Provisioning",
+      "rolloutType": "minor",
+      "buildSource": {
+        "parameters": {
+          "versionFile": "version.txt"
+        }
+      },
+      "notification": {
+        "email": {
+          "to": "adsDevelopers@microsoft.com"
+        }
+      }
+    },
+      "orchestratedSteps": [
+          {
+              "name": "deployInfrastructure",
+              "targetType": "ServiceResourceDefinition",
+              "targetName": "infrastructureResourceDefinition",
+              "actions": [ "wait/skip" ]
+          },
+          {
+              "name": "pushApiServiceImage",
+              "targetType": "ServiceResourceDefinition",
+              "targetName": "apiServiceImageResourceDefinition",
+              "actions": [ "Shell/Run" ]
+          },
+          {
+              "name": "addDnsRecords",
+              "targetType": "ServiceResourceDefinition",
+              "targetName": "apiServiceContainerAppDnsRecordsResourceDefinition",
+              "actions": [ "wait/skip" ]
+          },
+          {
+              "name": "deployApiService",
+              "dependsOn": ["pushApiServiceImage"],
+              "targetType": "ServiceResourceDefinition",
+              "targetName": "apiServiceContainerAppResourceDefinition",
+              "actions": [ "deploy" ]
+          }
+      ]
+  }
+  

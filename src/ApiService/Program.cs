@@ -24,7 +24,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 /// <summary>
-/// The Data Estate Health API service.
+/// The Provisioning API service.
 /// </summary>
 public class Program
 {
