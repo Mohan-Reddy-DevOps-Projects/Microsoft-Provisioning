@@ -3,8 +3,8 @@
   "contentVersion": "1.0.0",
   "serviceMetadata": {
     "serviceIdentifier":"f04e5f0a-a46b-4f9c-8bf7-d53ced284864",
-    "serviceGroup": "Microsoft.Azure.PDG.Infrastructure",
-    "displayName": "PDG Infrastructure",
+    "serviceGroup": "Microsoft.Purview.PDG.Provisioning",
+    "displayName": "PDG Provisioning",
     "environment": "$config(pdg.environment.name)",
     "TenantId": "$config(pdg.tenant.id)",
     "buildout": {

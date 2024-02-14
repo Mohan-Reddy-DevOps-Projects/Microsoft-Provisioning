@@ -64,7 +64,7 @@
             },
             {
                 "find": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_SUBSCRIPTION_ID__",
-                "replaceWith": "$config(pdg.cloudShareInfrastructureSubscriptionId)"
+                "replaceWith": "$config(pdg.cloudSharedInfrastructure.subscriptionId)"
             },
             {
                 "find": "__CORE_RESOURCE_GROUP_NAME__",

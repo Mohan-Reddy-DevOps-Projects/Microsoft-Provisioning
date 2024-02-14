@@ -7,7 +7,7 @@
             "dgFPAClientId": "24676e7f-bd4d-4ae7-8782-dd551f44c6ce",
             "resourceGroupName": "dgprov-dogfood-westus2-rg",
             "serviceShortName": "dgprov",
-            "subdomainName": "df-westus2-health",
+            "subdomainName": "df-westus2-prov",
             "useEstsr": "false"
         }
     }
