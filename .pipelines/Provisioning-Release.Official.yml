@@ -62,5 +62,3 @@ extends:
     rolloutSpecPath: Ev2Deployment/Ev2ServiceArtifactsRoot/rolloutSpec.${{parameters.deployType}}.json
     serviceRootPath: Ev2Deployment/Ev2ServiceArtifactsRoot
     alias: "Provisioning"
-    postBuildSteps:
-    - template: Provisioning.Build.PostBuildSteps.yml
