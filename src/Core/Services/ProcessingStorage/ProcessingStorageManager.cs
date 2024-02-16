@@ -122,8 +122,20 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         }
         else
         {
-            await this.CreateManagementPolicy(upsertStorage.StorageAccount, cancellationToken);
-            await this.CreateDefaultContainer(upsertStorage.StorageAccount, accountServiceModel, cancellationToken);
+            try
+            {
+                await this.CreateManagementPolicy(upsertStorage.StorageAccount, cancellationToken);
+                await this.CreateDefaultContainer(upsertStorage.StorageAccount, accountServiceModel, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError($"Failed to create dependencies for storage account {newStorageModel.Properties.ResourceId}", ex);
+                await this.DeleteStorageAccount(resourceGroup, newStorageModel.Name, cancellationToken);
+                this.logger.LogError($"Deleted storage account {newStorageModel.Properties.ResourceId}", ex);
+
+                throw;
+            }
+
             await this.storageAccountRepository.Create(newStorageModel, accountServiceModel.Id, cancellationToken);
         }
         this.logger.LogInformation($"Successfully created storage account {newStorageModel.Properties.ResourceId}");
