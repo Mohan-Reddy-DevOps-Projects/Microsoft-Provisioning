@@ -48,7 +48,7 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         IStorageAccountRepository<ProcessingStorageModel> storageAccountRepository,
         IAzureResourceManagerFactory azureResourceManagerFactory,
         IOptions<ProcessingStorageConfiguration> processingStorageConfiguration,
-        IDataEstateHealthRequestLogger logger) : base(azureResourceManagerFactory.Create<ProcessingStorageAuthConfiguration>(), processingStorageConfiguration, logger)
+        IServiceRequestLogger logger) : base(azureResourceManagerFactory.Create<ProcessingStorageAuthConfiguration>(), processingStorageConfiguration, logger)
     {
         this.storageAccountRepository = storageAccountRepository;
         this.tokenCredential = credentialFactory.CreateDefaultAzureCredential();

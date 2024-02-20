@@ -29,7 +29,7 @@ using ErrorCode = Common.ErrorCode;
 public class CertificateLoaderService : ICertificateLoaderService
 {
     private readonly IKeyVaultAccessorService keyVaultAccessorService;
-    private readonly IDataEstateHealthRequestLogger logger;
+    private readonly IServiceRequestLogger logger;
     private readonly TokenCredential credentials;
     private Dictionary<string, X509Certificate2> certCache = new();
     private Dictionary<string, X509Certificate2> oldCertCache = new();
@@ -44,7 +44,7 @@ public class CertificateLoaderService : ICertificateLoaderService
     /// </summary>
     public CertificateLoaderService(
         IKeyVaultAccessorService keyVaultAccessorService,
-        IDataEstateHealthRequestLogger logger,
+        IServiceRequestLogger logger,
         IOptions<CertificateSetConfiguration> certConfig,
         AzureCredentialFactory credentialFactory)
     {

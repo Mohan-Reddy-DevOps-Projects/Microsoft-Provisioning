@@ -28,7 +28,7 @@ using Microsoft.Purview.DataGovernance.Provisioning.Common;
 public class KeyVaultAccessorService : IKeyVaultAccessorService, IDisposable
 {
     private const string DefaultErrorMessage = "Failed to get key vault resource";
-    private readonly IDataEstateHealthRequestLogger logger;
+    private readonly IServiceRequestLogger logger;
     private readonly SecretClient secretClient;
     private bool isDisposed = false;
 
@@ -38,7 +38,7 @@ public class KeyVaultAccessorService : IKeyVaultAccessorService, IDisposable
     public KeyVaultAccessorService(
         AzureCredentialFactory credentialFactory,
         IOptions<KeyVaultConfiguration> keyVaultConfig,
-        IDataEstateHealthRequestLogger logger)
+        IServiceRequestLogger logger)
     {
         Uri authorityHost = new(keyVaultConfig.Value.Authority);
         DefaultAzureCredential tokenCredential = credentialFactory.CreateDefaultAzureCredential(authorityHost);

@@ -31,7 +31,7 @@ internal static class ExceptionHandler
     /// <param name="envConfig"></param>
     /// <param name="requestContextAccessor"></param>
     /// <returns></returns>
-    public static async Task HandleException(HttpContext context, IDataEstateHealthRequestLogger logger, EnvironmentConfiguration envConfig, IRequestContextAccessor requestContextAccessor)
+    public static async Task HandleException(HttpContext context, IServiceRequestLogger logger, EnvironmentConfiguration envConfig, IRequestContextAccessor requestContextAccessor)
     {
         IExceptionHandlerFeature contextFeature = context.Features.Get<IExceptionHandlerFeature>();
         if (contextFeature == null)

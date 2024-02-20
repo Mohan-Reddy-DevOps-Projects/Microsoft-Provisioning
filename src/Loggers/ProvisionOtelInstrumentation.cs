@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 
 /// <inheritdoc />
-public class DataEstateHealthOtelInstrumentation : IOtelInstrumentation, IDisposable
+public class ProvisionOtelInstrumentation : IOtelInstrumentation, IDisposable
 {
     /// <summary>
     /// Activity source - used to manually create traces
@@ -20,7 +20,7 @@ public class DataEstateHealthOtelInstrumentation : IOtelInstrumentation, IDispos
     /// <summary>
     /// Name of the metric
     /// </summary>
-    public const string InstrumentationName = "DataEstateHealthLogEvent";
+    public const string InstrumentationName = "ProvisionLogEvent";
 
     private readonly Meter meter;
 
@@ -29,9 +29,9 @@ public class DataEstateHealthOtelInstrumentation : IOtelInstrumentation, IDispos
     /// <summary>
     /// Instantiate instance of PurviewShareMdmInstrumentation.
     /// </summary>
-    public DataEstateHealthOtelInstrumentation()
+    public ProvisionOtelInstrumentation()
     {
-        string version = typeof(DataEstateHealthOtelInstrumentation).Assembly.GetName().Version?.ToString();
+        string version = typeof(ProvisionOtelInstrumentation).Assembly.GetName().Version?.ToString();
         this.meter = new(InstrumentationName, version);
 
         this.ActivitySource = new ActivitySource(InstrumentationName, version);

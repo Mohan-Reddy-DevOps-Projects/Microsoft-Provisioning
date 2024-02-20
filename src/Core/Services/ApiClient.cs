@@ -16,9 +16,9 @@ internal class ApiClient : IApiClient
 {
     private readonly HttpClient client;
 
-    private readonly IDataEstateHealthRequestLogger logger;
+    private readonly IServiceRequestLogger logger;
 
-    public ApiClient(HttpClient httpClient, IDataEstateHealthRequestLogger logger)
+    public ApiClient(HttpClient httpClient, IServiceRequestLogger logger)
     {
         this.logger = logger;
         this.client = httpClient;

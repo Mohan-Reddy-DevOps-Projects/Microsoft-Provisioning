@@ -118,7 +118,7 @@ public class Program
             app.UseHsts();
         }
 
-        IDataEstateHealthRequestLogger logger = app.Services.GetRequiredService<IDataEstateHealthRequestLogger>();
+        IServiceRequestLogger logger = app.Services.GetRequiredService<IServiceRequestLogger>();
         IRequestContextAccessor requestContextAccessor = app.Services.GetRequiredService<IRequestContextAccessor>();
         IOptions<EnvironmentConfiguration> envConfig = app.Services.GetRequiredService<IOptions<EnvironmentConfiguration>>();
         app.ConfigureExceptionHandler(logger, envConfig, requestContextAccessor);
@@ -144,7 +144,7 @@ public class Program
                 ServiceHealthCheck readinessCheck = app.Services.GetRequiredService<ServiceHealthCheck>();
                 readinessCheck.Initialized = true;
 
-                IDataEstateHealthRequestLogger logger = serviceProvider.GetRequiredService<IDataEstateHealthRequestLogger>();
+                IServiceRequestLogger logger = serviceProvider.GetRequiredService<IServiceRequestLogger>();
                 EnvironmentConfiguration environmentConfiguration = serviceProvider.GetRequiredService<IOptions<EnvironmentConfiguration>>().Value;
                 logger.LogInformation($"ApiService started successfully for versions {string.Join(", ", environmentConfiguration.PermittedApiVersions)}");
             });
@@ -170,7 +170,7 @@ public class Program
         }
         catch (Exception ex)
         {
-            IDataEstateHealthRequestLogger logger = app.Services.GetRequiredService<IDataEstateHealthRequestLogger>();
+            IServiceRequestLogger logger = app.Services.GetRequiredService<IServiceRequestLogger>();
             logger.LogCritical("Failed to initialize services during startup", ex);
             throw;
         }

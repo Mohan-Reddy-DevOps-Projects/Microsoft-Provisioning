@@ -5,7 +5,7 @@
 namespace Microsoft.Purview.DataGovernance.Provisioning.Common;
 
 /// <summary>
-/// Defines the various environments for Data Estate Health
+/// Defines the various environments
 /// </summary>
 public enum Environment
 {

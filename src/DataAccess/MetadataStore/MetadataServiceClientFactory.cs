@@ -30,7 +30,7 @@ internal sealed class MetadataServiceClientFactory : ClientFactory<ProjectBabylo
     public MetadataServiceClientFactory(
         IOptions<MetadataServiceConfiguration> config,
         IHttpClientFactory httpClientFactory,
-        IDataEstateHealthRequestLogger logger) : base(httpClientFactory, logger)
+        IServiceRequestLogger logger) : base(httpClientFactory, logger)
     {
         this.config = config.Value;
     }

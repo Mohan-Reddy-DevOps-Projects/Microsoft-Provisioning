@@ -29,7 +29,7 @@ using Microsoft.Purview.DataGovernance.Provisioning.Models;
 [ApiVersionNeutral]
 public class PlatformAccountNotificationsController : ControlPlaneController
 {
-    private readonly IDataEstateHealthRequestLogger logger;
+    private readonly IServiceRequestLogger logger;
     private readonly IPartnerService<AccountServiceModel, IPartnerDetails> partnerService;
     private readonly PartnerConfig<IPartnerDetails> partnerConfig;
     private readonly IAccountExposureControlConfigProvider exposureControl;
@@ -42,7 +42,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         IPartnerService<AccountServiceModel, IPartnerDetails> partnerService,
         IAccountExposureControlConfigProvider exposureControl,
         IOptions<PartnerConfiguration> partnerConfiguration,
-        IDataEstateHealthRequestLogger logger,
+        IServiceRequestLogger logger,
         IProcessingStorageManager processingStorageManager)
     {
         this.logger = logger;

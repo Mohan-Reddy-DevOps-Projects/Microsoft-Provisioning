@@ -20,14 +20,14 @@ using Microsoft.Purview.DataGovernance.Provisioning.Models;
 internal abstract class StorageManager<TConfig>
     where TConfig : ProcessingStorageConfiguration
 {
-    protected readonly IDataEstateHealthRequestLogger logger;
+    protected readonly IServiceRequestLogger logger;
     protected readonly IAzureResourceManager azureResourceManager;
     protected readonly TConfig storageConfiguration;
 
     public StorageManager(
         IAzureResourceManager azureResourceManager,
         IOptions<TConfig> storageConfiguration,
-        IDataEstateHealthRequestLogger logger)
+        IServiceRequestLogger logger)
     {
         this.logger = logger;
         this.storageConfiguration = storageConfiguration.Value;

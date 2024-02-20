@@ -20,7 +20,7 @@ public static class LoggerRetryActionFactory
     /// <param name="serviceName"></param>
     /// <returns></returns>
     public static Action<DelegateResult<HttpResponseMessage>, TimeSpan, int, Context> CreateHttpClientRetryAction(
-        IDataEstateHealthRequestLogger logger,
+        IServiceRequestLogger logger,
         string serviceName)
     {
         return (result, _, retryCount, _) =>
@@ -37,7 +37,7 @@ public static class LoggerRetryActionFactory
     /// <param name="serviceName"></param>
     /// <returns></returns>
     public static Action<Exception, TimeSpan, int, Context> CreateWorkerRetryAction(
-        IDataEstateHealthRequestLogger logger,
+        IServiceRequestLogger logger,
         string serviceName)
     {
         return (result, _, retryCount, _) =>

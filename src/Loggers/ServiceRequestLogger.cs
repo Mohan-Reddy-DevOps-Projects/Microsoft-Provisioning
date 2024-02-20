@@ -9,23 +9,23 @@ using Microsoft.Purview.DataGovernance.Provisioning.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-/// <inheritdoc cref="DataEstateHealthLogger" />
-/// <inheritdoc cref="IDataEstateHealthRequestLogger" />
+/// <inheritdoc cref="ServiceLogger" />
+/// <inheritdoc cref="IServiceRequestLogger" />
 /// <summary>
 /// Scoped logger implementation class.
 /// </summary>
-internal class DataEstateHealthRequestLogger : DataEstateHealthLogger, IDataEstateHealthRequestLogger
+internal class ServiceRequestLogger : ServiceLogger, IServiceRequestLogger
 {
     private readonly IRequestContextAccessor requestContextAccessor;
 
     /// <inheritdoc />
     /// <summary>
-    /// Initializes a new instance of the <see cref="DataEstateHealthRequestLogger" /> class.
+    /// Initializes a new instance of the <see cref="ServiceRequestLogger" /> class.
     /// </summary>
     /// <param name="loggerFactory">The logger factory to use</param>
     /// <param name="requestContextAccessor">The correlation context.</param>
     /// <param name="environmentConfiguration">Environment configuration.</param>
-    public DataEstateHealthRequestLogger(
+    public ServiceRequestLogger(
         ILoggerFactory loggerFactory,
         IRequestContextAccessor requestContextAccessor,
         IOptions<EnvironmentConfiguration> environmentConfiguration)

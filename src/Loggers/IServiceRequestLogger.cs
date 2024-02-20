@@ -8,12 +8,12 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 
 /// <summary>
-/// Represents a type for logging Data Estate Health logs.
+/// Represents a type for logging Data.
 /// </summary>
-public interface IDataEstateHealthRequestLogger : ILogger
+public interface IServiceRequestLogger : ILogger
 {
     /// <summary>
-    /// Logs a trace event to the DataEstateHealthLogEvent table.
+    /// Logs a trace event to the table.
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
@@ -30,7 +30,7 @@ public interface IDataEstateHealthRequestLogger : ILogger
         [CallerLineNumber] int sourceLineNumber = 0);
 
     /// <summary>
-    /// Logs an information event to the DataEstateHealthLogEvent table.
+    /// Logs an information event to the table.
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
@@ -47,7 +47,7 @@ public interface IDataEstateHealthRequestLogger : ILogger
         [CallerLineNumber] int sourceLineNumber = 0);
 
     /// <summary>
-    /// Logs a warning event to the DataEstateHealthLogEvent table.
+    /// Logs a warning event to the table.
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
@@ -64,7 +64,7 @@ public interface IDataEstateHealthRequestLogger : ILogger
         [CallerLineNumber] int sourceLineNumber = 0);
 
     /// <summary>
-    /// Logs an error event to the DataEstateHealthLogEvent table.
+    /// Logs an error event to the table.
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>
@@ -81,7 +81,7 @@ public interface IDataEstateHealthRequestLogger : ILogger
         [CallerLineNumber] int sourceLineNumber = 0);
 
     /// <summary>
-    /// Logs a critical event to the DataEstateHealthLogEvent table.
+    /// Logs a critical event to the table.
     /// </summary>
     /// <param name="message"></param>
     /// <param name="exception"></param>

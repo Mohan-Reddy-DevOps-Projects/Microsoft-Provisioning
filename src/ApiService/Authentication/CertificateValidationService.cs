@@ -30,7 +30,7 @@ public class CertificateValidationService : IDisposable
     /// </summary>
     /// <param name="config">Authorization configuration</param>
     /// <param name="logger">Logger</param>
-    public CertificateValidationService(IOptions<AllowListedCertificateConfiguration> config, IDataEstateHealthRequestLogger logger)
+    public CertificateValidationService(IOptions<AllowListedCertificateConfiguration> config, IServiceRequestLogger logger)
     {
         this.dynamicCertificateValidatorFactory = new DynamicCertificateValidatorFactory(
             (level, message) =>

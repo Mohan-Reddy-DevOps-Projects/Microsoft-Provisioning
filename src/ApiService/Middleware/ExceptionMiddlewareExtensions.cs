@@ -17,7 +17,7 @@ internal static class ExceptionMiddlewareExtensions
     /// <param name="logger"></param>
     /// <param name="envConfig"></param>
     /// <param name="requestContextAccessor"></param>
-    public static void ConfigureExceptionHandler(this IApplicationBuilder app, IDataEstateHealthRequestLogger logger, IOptions<EnvironmentConfiguration> envConfig, IRequestContextAccessor requestContextAccessor)
+    public static void ConfigureExceptionHandler(this IApplicationBuilder app, IServiceRequestLogger logger, IOptions<EnvironmentConfiguration> envConfig, IRequestContextAccessor requestContextAccessor)
     {
         app.UseExceptionHandler(appError =>
         {

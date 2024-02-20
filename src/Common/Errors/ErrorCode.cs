@@ -6,7 +6,7 @@ namespace Microsoft.Purview.DataGovernance.Provisioning.Common;
 
 
 /// <summary>
-/// The error code type for Data Estate Health exceptions.
+/// The error code type for the applications exceptions.
 /// </summary>
 public class ErrorCode : ServiceErrorCode
 {

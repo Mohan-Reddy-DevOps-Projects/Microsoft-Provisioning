@@ -21,7 +21,7 @@ internal sealed class MdmMiddleware
     /// <returns></returns>
     public async Task Invoke(
         HttpContext httpContext,
-        IDataEstateHealthRequestLogger logger)
+        IServiceRequestLogger logger)
     {
         try
         {
@@ -41,7 +41,7 @@ internal sealed class MdmMiddleware
 
     private async Task HandleRequest(
         HttpContext httpContext,
-        IDataEstateHealthRequestLogger logger)
+        IServiceRequestLogger logger)
     {
         int statusCode = httpContext.Response.StatusCode;
         Stopwatch timer = Stopwatch.StartNew();

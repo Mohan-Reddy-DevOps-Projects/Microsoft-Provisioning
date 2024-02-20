@@ -42,7 +42,7 @@ public abstract class HttpClientBase<TBase> : ServiceClient<TBase>
     /// <summary>
     /// The service logger.
     /// </summary>
-    protected readonly IDataEstateHealthRequestLogger logger;
+    protected readonly IServiceRequestLogger logger;
 
     /// <summary>
     /// The client name used to connect to the service.
@@ -57,7 +57,7 @@ public abstract class HttpClientBase<TBase> : ServiceClient<TBase>
     /// <param name="clientName">the name of the client.</param>
     /// <param name="disposeHttpClient">should we dispose?</param>
     public HttpClientBase(
-        IDataEstateHealthRequestLogger logger,
+        IServiceRequestLogger logger,
         HttpClient httpClient,
         string clientName,
         bool disposeHttpClient) : base(httpClient, disposeHttpClient)

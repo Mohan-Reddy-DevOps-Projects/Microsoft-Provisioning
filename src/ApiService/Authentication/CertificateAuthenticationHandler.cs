@@ -23,7 +23,7 @@ internal class CertificateAuthenticationHandler : AuthenticationHandler<Certific
 {
     private static readonly Dictionary<string, CertificateSet> controllerToCertificateSetMap;
 
-    private readonly IDataEstateHealthRequestLogger logger;
+    private readonly IServiceRequestLogger logger;
     private readonly CertificateValidationService certificateValidationService;
     private readonly EnvironmentConfiguration environmentConfig;
 
@@ -35,7 +35,7 @@ internal class CertificateAuthenticationHandler : AuthenticationHandler<Certific
         IOptions<EnvironmentConfiguration> environmentConfig,
         ILoggerFactory loggerFactory,
         UrlEncoder encoder,
-        IDataEstateHealthRequestLogger logger,
+        IServiceRequestLogger logger,
         CertificateValidationService certificateValidationService)
         : base(options, loggerFactory, encoder)
     {

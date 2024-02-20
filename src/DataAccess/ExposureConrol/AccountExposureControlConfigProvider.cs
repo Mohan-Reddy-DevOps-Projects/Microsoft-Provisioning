@@ -12,7 +12,7 @@ using Microsoft.Azure.Purview.ExposureControlLibrary;
 
 internal sealed class AccountExposureControlConfigProvider : IAccountExposureControlConfigProvider
 {
-    private readonly IDataEstateHealthRequestLogger logger;
+    private readonly IServiceRequestLogger logger;
     private readonly IExposureControlClient exposureControlClient;
 
     private const string Tag = "ExposureControl";
@@ -98,7 +98,7 @@ internal sealed class AccountExposureControlConfigProvider : IAccountExposureCon
     }
 
     public AccountExposureControlConfigProvider(
-        IDataEstateHealthRequestLogger logger,
+        IServiceRequestLogger logger,
         IExposureControlClient exposureControlClient)
     {
         this.logger = logger;

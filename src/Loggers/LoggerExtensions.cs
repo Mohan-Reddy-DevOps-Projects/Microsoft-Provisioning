@@ -47,12 +47,12 @@ public static class LoggerExtensions
 
         // Mdm Loggers
 
-        var purviewOtelInstrumentation = new DataEstateHealthOtelInstrumentation();
+        var purviewOtelInstrumentation = new ProvisionOtelInstrumentation();
         serviceCollection.AddSingleton<IOtelInstrumentation>(purviewOtelInstrumentation);
 
         // Mds Loggers
         serviceCollection.AddSingleton<IRequestContextAccessor, RequestContextAccessor>();
-        serviceCollection.AddSingleton<IDataEstateHealthRequestLogger, DataEstateHealthRequestLogger>();
+        serviceCollection.AddSingleton<IServiceRequestLogger, ServiceRequestLogger>();
 
         Action<ResourceBuilder> configureResource = r => r.AddService(
            serviceName: GetRoleName(),
@@ -66,7 +66,7 @@ public static class LoggerExtensions
             {
                 builder.SetSampler(new AlwaysOnSampler())
                     .AddProcessor(new AddEnvStateActivityProcessor(environmentConfiguration))
-                    .AddSource(DataEstateHealthOtelInstrumentation.InstrumentationName)
+                    .AddSource(ProvisionOtelInstrumentation.InstrumentationName)
                     .SetErrorStatusOnException()
                     .AddHttpClientInstrumentation(options =>
                     {
@@ -134,7 +134,7 @@ public static class LoggerExtensions
             {
                 builder
                     .ConfigureResource(configureResource)
-                    .AddMeter(DataEstateHealthOtelInstrumentation.InstrumentationName)
+                    .AddMeter(ProvisionOtelInstrumentation.InstrumentationName)
                     .AddRuntimeInstrumentation()
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation();

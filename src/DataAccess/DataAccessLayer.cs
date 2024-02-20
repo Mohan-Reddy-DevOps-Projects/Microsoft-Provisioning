@@ -70,7 +70,7 @@ public static class DataAccessLayer
             .AddSingleton<IExposureControlClient, ExposureControlClient>()
             .AddSingleton<IAccountExposureControlConfigProvider, AccountExposureControlConfigProvider>(provider =>
             {
-                var logger = provider.GetService<IDataEstateHealthRequestLogger>();
+                var logger = provider.GetService<IServiceRequestLogger>();
                 var exposureControlClient = provider.GetService<IExposureControlClient>();
                 return new AccountExposureControlConfigProvider(logger, exposureControlClient);
             });
@@ -125,7 +125,7 @@ public static class DataAccessLayer
                 IOptions<TConfig> configOptions = serviceProvider.GetRequiredService<IOptions<TConfig>>();
                 var messageHandler = new CertificateHandler<TConfig>(certificateLoaderService, configOptions);
 
-                IDataEstateHealthRequestLogger logger = serviceProvider.GetRequiredService<IDataEstateHealthRequestLogger>();
+                IServiceRequestLogger logger = serviceProvider.GetRequiredService<IServiceRequestLogger>();
                 logger.LogInformation($"Created a new {nameof(SocketsHttpHandler)} instance named '{settings.Name}' for outbound calls");
 
                 return messageHandler;
@@ -137,7 +137,7 @@ public static class DataAccessLayer
                 {
                     IAsyncPolicy<HttpResponseMessage> policy = PollyRetryPolicies.GetHttpClientTransientRetryPolicy(
                         onRetry: LoggerRetryActionFactory.CreateHttpClientRetryAction(
-                            serviceProvider.GetService<IDataEstateHealthRequestLogger>(),
+                            serviceProvider.GetService<IServiceRequestLogger>(),
                             settings.Name),
                         retryCount: settings.RetryCount);
                     
@@ -148,7 +148,7 @@ public static class DataAccessLayer
                 // Default or fallback policy
                 return PollyRetryPolicies.GetHttpClientTransientRetryPolicy(
                     onRetry: LoggerRetryActionFactory.CreateHttpClientRetryAction(
-                        serviceProvider.GetService<IDataEstateHealthRequestLogger>(),
+                        serviceProvider.GetService<IServiceRequestLogger>(),
                         settings.Name),
                     retryCount: settings.RetryCount);
             });

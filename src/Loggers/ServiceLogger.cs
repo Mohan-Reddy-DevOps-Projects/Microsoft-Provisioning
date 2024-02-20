@@ -15,16 +15,16 @@ using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 /// <summary>
 /// Logger for singleton services that does not log scoped parameters
 /// </summary>
-public abstract class DataEstateHealthLogger
+public abstract class ServiceLogger
 {
     private readonly ILogger logger;
 
     private readonly EnvironmentConfiguration environmentConfiguration;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DataEstateHealthLogger" /> class.
+    /// Initializes a new instance of the <see cref="ServiceLogger" /> class.
     /// </summary>
-    public DataEstateHealthLogger(ILoggerFactory loggerFactory, IOptions<EnvironmentConfiguration> environmentConfiguration)
+    public ServiceLogger(ILoggerFactory loggerFactory, IOptions<EnvironmentConfiguration> environmentConfiguration)
     {
         this.logger = loggerFactory.CreateLogger("Log");
         this.environmentConfiguration = environmentConfiguration.Value;
