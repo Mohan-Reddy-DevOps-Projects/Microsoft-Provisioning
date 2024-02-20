@@ -19,6 +19,7 @@ using Microsoft.Purview.DataGovernance.Provisioning.ProvisioningService.Configur
 using OperationType = DataTransferObjects.OperationType;
 using System.Collections.Concurrent;
 using Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
+using Microsoft.Purview.DataGovernance.Provisioning.Models;
 
 /// <summary>
 /// Purview account notifications controller.
@@ -63,6 +64,11 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         [FromBody] AccountServiceModel account,
         CancellationToken cancellationToken)
     {
+        if (account.ProvisioningState != ProvisioningState.Creating || account.IsFreeTier())
+        {
+            return this.Ok();
+        }
+
         if (!this.exposureControl.IsDataGovProvisioningEnabled(account.Id, account.SubscriptionId, account.TenantId))
         {
             return this.Ok();
@@ -111,6 +117,11 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         [FromBody] AccountServiceModel account,
         CancellationToken cancellationToken)
     {
+        if (account.IsFreeTier())
+        {
+            return this.Ok();
+        }
+
         if (!this.exposureControl.IsDataGovProvisioningEnabled(account.Id, account.SubscriptionId, account.TenantId))
         {
             return this.Ok();

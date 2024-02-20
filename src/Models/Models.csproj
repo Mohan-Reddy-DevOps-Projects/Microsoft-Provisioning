@@ -9,4 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.ProjectBabylon.Metadata.ProjectBabylonMetadataClient" />
+  </ItemGroup>
 </Project>
