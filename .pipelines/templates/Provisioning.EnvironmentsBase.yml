@@ -1,0 +1,43 @@
+parameters:
+- name: deployType
+  type: string
+  displayName: Deploy Type
+  default: minor
+  values:
+  - major
+  - minor
+
+- name: pdgEnvironment
+  type: string
+
+- name: 'debug'
+  displayName: 'Enable debug output'
+  type: boolean
+  default: false
+
+resources:
+  repositories: 
+  - repository: pdgTemplates
+    type: git
+    name: SharedYamlTemplates
+    ref: refs/heads/main
+
+extends:
+  template: v1/Pdg.Release.Containers.Official.yml@pdgTemplates
+  parameters:
+    expediteRollout: false
+    globalOutageRollout: false
+    icmIncidentId: 0
+    buildSolution: dirs.proj
+    majorVersion: 1
+    minorVersion: 0
+    containersToPackage:
+    - ApiService
+    productionRegions: '*'
+    regionExceptions: none
+    rolloutSpecPath: Ev2Deployment/Ev2ServiceArtifactsRoot/rolloutSpec.${{parameters.deployType}}.json
+    serviceRootPath: Ev2Deployment/Ev2ServiceArtifactsRoot
+    pdgEnvironment: ${{ parameters.pdgEnvironment }}
+    alias: "Provisioning"
+    prodServiceGroupOverride: Microsoft.Purview.PDG.Provisioning
+

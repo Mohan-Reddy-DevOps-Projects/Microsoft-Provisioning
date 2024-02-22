@@ -1,0 +1,22 @@
+parameters:
+- name: deployType
+  type: string
+  displayName: Deploy Type
+  default: minor
+  values:
+  - major
+  - minor
+
+- name: 'debug'
+  displayName: 'Enable debug output'
+  type: boolean
+  default: false
+
+trigger: none
+
+extends:
+  template: templates/Provisioning.EnvironmentsBase.yml
+  parameters:
+    pdgEnvironment: demo
+    deployType: ${{ parameters.deployType }}
+    debug: ${{ parameters.debug }}
