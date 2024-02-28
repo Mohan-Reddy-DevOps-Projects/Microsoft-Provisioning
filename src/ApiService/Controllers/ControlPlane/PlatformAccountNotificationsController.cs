@@ -64,7 +64,9 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         [FromBody] AccountServiceModel account,
         CancellationToken cancellationToken)
     {
-        if (account.ProvisioningState != ProvisioningState.Creating || account.IsFreeTier())
+        this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
+
+        if (account.ProvisioningState != ProvisioningState.Creating || account.IsFreeTier() || !account.IsReconciled())
         {
             return this.Ok();
         }
@@ -117,7 +119,9 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         [FromBody] AccountServiceModel account,
         CancellationToken cancellationToken)
     {
-        if (account.IsFreeTier())
+        this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
+
+        if (account.IsFreeTier() || !account.IsReconciled())
         {
             return this.Ok();
         }

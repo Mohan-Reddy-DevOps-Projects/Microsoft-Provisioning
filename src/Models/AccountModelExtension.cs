@@ -21,4 +21,9 @@ public static class AccountModelExtension
     {
         return string.Equals(accountModel.Sku?.Name, AccountSkuName.Free, StringComparison.OrdinalIgnoreCase);
     }
+
+    public static bool IsReconciled(this AccountServiceModel accountModel)
+    {
+        return string.Equals(accountModel.ReconciliationConfig?.ReconciliationStatus, ReconciliationStatus.Active, StringComparison.OrdinalIgnoreCase);
+    }
 }
