@@ -52,7 +52,7 @@
         "bindings": [
             {
                 "find": "__CORE_ACA_ENVIRONMENT_NAME__",
-                "replaceWith": "$config(pdg.regionSharedInfrastructure.acaEnvironmentPrefix)$config(regionShortName)"
+                "replaceWith": "$config(pdg.regionSharedInfrastructure.acaEnvironment.name)"
             },
             {
                 "find": "__CORE_CLOUD_SHARED_INFRASTRUCTURE_DNS_ZONE_NAME__",
@@ -68,11 +68,11 @@
             },
             {
                 "find": "__CORE_RESOURCE_GROUP_NAME__",
-                "replaceWith": "$config(pdg.regionSharedInfrastructure.resourceGroupPrefixes.sharedInfra)$config(regionName)"
+                "replaceWith": "$config(pdg.regionSharedInfrastructure.resourceGroupNames.sharedInfra)"
             },
             {
                 "find": "__CORE_VNET_NAME__",
-                "replaceWith": "$config(pdg.regionSharedInfrastructure.vnetPrefix)$config(regionShortName)"
+                "replaceWith": "$config(pdg.regionSharedInfrastructure.vnet.name)"
             }
         ]
     },

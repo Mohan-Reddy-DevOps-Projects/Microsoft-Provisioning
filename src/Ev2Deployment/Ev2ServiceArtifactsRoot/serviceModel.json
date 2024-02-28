@@ -15,7 +15,7 @@
     {
       "name": "dgProvisioningResourceGroupDefinition",
       "azureResourceGroupName": "$config(dgprov.resourceGroupName)",
-      "subscriptionKey": "$config(pdg.regionSharedInfrastructure.subscriptionKeyPrefixes.core)$location()",
+      "subscriptionKey": "$config(pdg.regionSharedInfrastructure.subscriptionKeys.core)",
       "serviceResourceDefinitions": [
         {
           "name": "infrastructureResourceDefinition",
