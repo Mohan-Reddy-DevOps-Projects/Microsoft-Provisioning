@@ -112,10 +112,6 @@
                 "replaceWith": "https://$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv.$config(keyVault.domainNameSuffix)"
             },
             {
-                "find": "\"__INFRA_PROCESSING_STORAGE_SUBSCRIPTIONS__\"",
-                "replaceWith": "$config(pdg.regionSharedInfrastructure.sharedSubscriptions.storage)"
-            },
-            {
                 "find": "__INFRA_RESOURCE_GROUP_NAME__",
                 "replaceWith": "$config(dgprov.resourceGroupName)"
             },
@@ -132,8 +128,16 @@
               "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityClientId.value)"
             },
             {
+              "find": "__INFRA_CONTAINER_APP_OBJECT_ID__",
+              "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityObjectId.value)"
+            },
+            {
               "find": "__INFRA_GENEVA_ERROR_LOG_TABLE_ID__",
               "replaceWith": "$config(pdg.genevaAccountProvisioning.genevaLogTableIds.dgProvision-errorLog)"
+            },
+            {
+              "find": "__PROCESSING_STORAGE_SUBSCRIPTIONID__",
+              "replaceWith": "$subscriptionId()"
             }
         ]
     },

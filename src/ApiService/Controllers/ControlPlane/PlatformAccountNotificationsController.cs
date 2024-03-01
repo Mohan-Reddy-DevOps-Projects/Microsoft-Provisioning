@@ -121,7 +121,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
     {
         this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
 
-        if (account.IsFreeTier() || !account.IsReconciled())
+        if (operation == OperationType.SoftDelete || account.IsFreeTier() || !account.IsReconciled())
         {
             return this.Ok();
         }

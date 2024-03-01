@@ -30,6 +30,13 @@
               "actions": [ "wait/skip" ]
           },
           {
+            "name": "deployProcessingStorageRoleAssignments",
+            "dependsOn": ["deployInfrastructure"],
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "processingStorageRoleAssignmentResourceDefinition",
+            "actions": ["wait/skip"]
+          },
+          {
               "name": "pushApiServiceImage",
               "targetType": "ServiceResourceDefinition",
               "targetName": "apiServiceImageResourceDefinition",

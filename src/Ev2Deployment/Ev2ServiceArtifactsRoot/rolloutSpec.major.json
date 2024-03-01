@@ -56,6 +56,13 @@
       }
     },
     {
+      "name": "deployProcessingStorageRoleAssignments",
+      "dependsOn": ["deployInfrastructure"],
+      "targetType": "ServiceResourceDefinition",
+      "targetName": "processingStorageRoleAssignmentResourceDefinition",
+      "actions": ["deploy"]
+    },
+    {
       "name": "pushApiServiceImage",
       "dependsOn": [
         "deployInfrastructure"
