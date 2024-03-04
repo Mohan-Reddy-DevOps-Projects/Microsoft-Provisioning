@@ -23,7 +23,7 @@
                     "settings": {
                         "dgprov": {
                             "synapseRegion": "eastus2euap",
-                            "subdomainName": "prod-eastus2euap-provisioning",
+                            "subdomainName": "prod-eastus2euap-prov",
                             "resourceGroupName": "dgprov-canary-centraluseuap-rg"
                         }
                     }
