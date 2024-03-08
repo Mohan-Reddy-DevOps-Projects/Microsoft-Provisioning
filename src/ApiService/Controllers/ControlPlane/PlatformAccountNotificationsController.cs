@@ -64,7 +64,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         [FromBody] AccountServiceModel account,
         CancellationToken cancellationToken)
     {
-        this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
+        this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku?.Name}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
 
         if (account.ProvisioningState != ProvisioningState.Creating || account.IsFreeTier() || !account.IsReconciled())
         {
@@ -119,7 +119,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         [FromBody] AccountServiceModel account,
         CancellationToken cancellationToken)
     {
-        this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
+        this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku?.Name}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
 
         if (operation == OperationType.SoftDelete || account.IsFreeTier() || !account.IsReconciled())
         {
