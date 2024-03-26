@@ -26,6 +26,7 @@ using ProcessingStorageModel = Models.ProcessingStorageModel;
 using StorageAccountKey = global::Azure.ResourceManager.Storage.Models.StorageAccountKey;
 using StorageSasRequest = Models.StorageSasRequest;
 using Microsoft.Purview.DataGovernance.Common;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 /// <summary>
 /// Processing storage manager.

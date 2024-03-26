@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Polly;
 using AzureCredentialFactory = Microsoft.Purview.DataGovernance.Common.AzureCredentialFactory;
+using Microsoft.Purview.DataGovernance.DataAccess;
+using Microsoft.Purview.DataGovernance.Loggers;
+using Microsoft.Purview.DataGovernance.Common.Configuration;
 
 /// <summary>
 /// Provides behavior on the data access layer level.

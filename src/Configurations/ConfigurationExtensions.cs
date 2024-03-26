@@ -6,6 +6,7 @@ namespace Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Purview.DataGovernance.Common.Configuration;
 
 /// <summary>
 /// Extension methods for adding configurations

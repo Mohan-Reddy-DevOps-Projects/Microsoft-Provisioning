@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.ProjectBabylon.Metadata.Models;
+using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.ProvisioningService.Configurations;
 using Microsoft.WindowsAzure.ResourceStack.Common.Json;

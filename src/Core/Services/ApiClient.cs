@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.ResourceStack.Common.Json;
 using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 internal class ApiClient : IApiClient
 {

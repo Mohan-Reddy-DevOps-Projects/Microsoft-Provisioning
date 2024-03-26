@@ -15,9 +15,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
 using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Purview.DataGovernance.Loggers;
+using Microsoft.Purview.DataGovernance.Common.Configuration;
 
 internal class CertificateAuthenticationHandler : AuthenticationHandler<CertificateAuthenticationOptions>
 {

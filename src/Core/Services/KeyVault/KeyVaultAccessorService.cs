@@ -21,6 +21,7 @@ using Microsoft.Extensions.Options;
 using ErrorCode = Common.ErrorCode;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 /// <summary>
 /// Access an Azure key vault using a managed identity

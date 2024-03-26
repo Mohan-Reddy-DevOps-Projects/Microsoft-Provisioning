@@ -5,9 +5,9 @@
 namespace Microsoft.Purview.DataGovernance.Provisioning.ProvisioningService.Configurations;
 
 using Microsoft.Azure.ProjectBabylon.Metadata.Models;
+using Microsoft.Purview.DataGovernance.Common;
+using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
-using Microsoft.Purview.DataGovernance.Provisioning.Models;
 
 using System.Globalization;
 using System.Net;

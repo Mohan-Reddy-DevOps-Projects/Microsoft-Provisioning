@@ -9,7 +9,7 @@ using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 
 using System.Text.Json;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 /// <summary>
 /// Http Client handler

@@ -4,8 +4,9 @@
 
 namespace Microsoft.Purview.DataGovernance.Provisioning.ApiService;
 
+using Microsoft.Purview.DataGovernance.Common;
+using Microsoft.Purview.DataGovernance.Common.Configuration;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
-using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using Microsoft.Purview.DataGovernance.Provisioning.Models;
 using System.Net;
 

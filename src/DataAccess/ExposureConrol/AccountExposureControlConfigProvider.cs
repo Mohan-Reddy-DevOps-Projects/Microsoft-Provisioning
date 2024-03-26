@@ -2,13 +2,14 @@
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 // -----------------------------------------------------------
 
-namespace Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
+namespace Microsoft.Purview.DataGovernance.DataAccess;
 
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
+using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Azure.Purview.ExposureControlLibrary;
+using Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
 
 internal sealed class AccountExposureControlConfigProvider : IAccountExposureControlConfigProvider
 {

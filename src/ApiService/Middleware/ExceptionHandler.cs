@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using System.Net;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
-using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using System.Text;
 using System.Net.Http.Headers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
+using Microsoft.Purview.DataGovernance.Loggers;
+using Microsoft.Purview.DataGovernance.Common.Configuration;
 
 internal static class ExceptionHandler
 {

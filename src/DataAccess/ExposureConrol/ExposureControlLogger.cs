@@ -2,9 +2,9 @@
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 // -----------------------------------------------------------
 
-namespace Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
+namespace Microsoft.Purview.DataGovernance.DataAccess;
 
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
+using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Azure.Purview.ExposureControlLibrary;
 using System.Diagnostics;
 

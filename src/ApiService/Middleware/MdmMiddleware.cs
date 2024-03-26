@@ -1,5 +1,6 @@
 ﻿namespace Microsoft.Purview.DataGovernance.Provisioning.ApiService;
 
+using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using System.Diagnostics;
 

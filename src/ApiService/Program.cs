@@ -22,6 +22,8 @@ using System.Security.Authentication;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Purview.DataGovernance.Loggers;
+using Microsoft.Purview.DataGovernance.Common.Configuration;
 
 /// <summary>
 /// The Provisioning API service.
@@ -56,7 +58,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddApiVersioning();
-
+        LoggerExtensions.EventName = "ProvisionLogEvent";
         builder.Services
             .AddLogger(genevaConfiguration, serviceConfiguration, environmentConfiguration, builder.Environment.IsDevelopment())
             .AddApiServiceConfigurations(builder.Configuration)

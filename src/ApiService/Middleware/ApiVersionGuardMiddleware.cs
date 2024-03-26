@@ -8,11 +8,11 @@ using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
-using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
-using Microsoft.Purview.DataGovernance.Provisioning.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.ResourceStack.Common.Extensions;
 using Newtonsoft.Json;
+using Microsoft.Purview.DataGovernance.Common.Configuration;
+using Microsoft.Purview.DataGovernance.Common;
 
 /// <summary>
 /// Middleware that validates the api-version parameter of incoming requests.

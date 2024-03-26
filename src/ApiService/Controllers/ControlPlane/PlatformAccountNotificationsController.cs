@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
 using Microsoft.Azure.ProjectBabylon.Metadata.Models;
-using Microsoft.Purview.DataGovernance.Provisioning.Core;
 using System.Threading;
 using Microsoft.Extensions.Options;
 using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using Microsoft.Purview.DataGovernance.Provisioning.ProvisioningService;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.ProvisioningService.Configurations;
 using OperationType = DataTransferObjects.OperationType;
 using System.Collections.Concurrent;
 using Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
 using Microsoft.Purview.DataGovernance.Provisioning.Models;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 /// <summary>
 /// Purview account notifications controller.

@@ -6,8 +6,8 @@ namespace Microsoft.Purview.DataGovernance.Provisioning.Core;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
-using Microsoft.Purview.DataGovernance.Provisioning.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Purview.DataGovernance.Common;
 
 /// <summary>
 /// Provides behavior on the core layer level.

@@ -6,6 +6,7 @@ namespace Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 
 using System;
 using System.Net.Http;
+using Microsoft.Purview.DataGovernance.Loggers;
 using Polly;
 
 /// <summary>

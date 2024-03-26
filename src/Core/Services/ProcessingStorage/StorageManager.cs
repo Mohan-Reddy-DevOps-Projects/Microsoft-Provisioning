@@ -12,10 +12,10 @@ using global::Azure.ResourceManager.Storage.Models;
 using global::Azure.ResourceManager.Storage;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
 using Microsoft.Purview.DataGovernance.Provisioning.Common.Utilities;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using Microsoft.Extensions.Options;
 using Microsoft.Purview.DataGovernance.Provisioning.Models;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 internal abstract class StorageManager<TConfig>
     where TConfig : ProcessingStorageConfiguration

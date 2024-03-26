@@ -7,12 +7,12 @@ namespace Microsoft.Purview.DataGovernance.Provisioning.Core;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Reporting.Common;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 /// <summary>
 /// The token service provider for 1P or 3P Aad application.

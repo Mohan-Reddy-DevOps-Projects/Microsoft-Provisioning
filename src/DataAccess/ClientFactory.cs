@@ -7,7 +7,7 @@ namespace Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
+using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Rest;
 
 /// <summary>

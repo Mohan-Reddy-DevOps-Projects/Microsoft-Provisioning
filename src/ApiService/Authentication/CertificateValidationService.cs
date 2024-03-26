@@ -12,7 +12,7 @@ using Microsoft.Identity.ServerAuthorization;
 using LogLevel = Identity.ServerAuthorization.LogLevel;
 using System.Linq;
 using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 /// <summary>
 /// Validate client certificates

@@ -8,8 +8,8 @@ using System;
 using System.Net.Http;
 using Microsoft.Azure.ProjectBabylon.Metadata;
 using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Extensions.Options;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 /// <inheritdoc/>
 internal sealed class MetadataServiceClientFactory : ClientFactory<ProjectBabylonMetadataClient>, IDisposable

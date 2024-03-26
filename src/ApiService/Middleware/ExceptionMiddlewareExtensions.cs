@@ -4,9 +4,9 @@
 
 namespace Microsoft.Purview.DataGovernance.Provisioning.ApiService;
 
-using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Extensions.Options;
+using Microsoft.Purview.DataGovernance.Common.Configuration;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 internal static class ExceptionMiddlewareExtensions
 {

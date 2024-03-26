@@ -9,8 +9,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Azure.ProjectBabylon.Metadata;
 using Microsoft.Azure.ProjectBabylon.Metadata.Models;
+using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Rest;
 
 internal class MetadataAccessorService : IMetadataAccessorService

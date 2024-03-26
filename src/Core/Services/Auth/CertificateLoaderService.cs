@@ -22,6 +22,7 @@ using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Extensions.Options;
 using Microsoft.Purview.DataGovernance.Common;
 using ErrorCode = Common.ErrorCode;
+using Microsoft.Purview.DataGovernance.Loggers;
 
 /// <summary>
 /// Loads a certificate from certificate store, file or key vault
