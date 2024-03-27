@@ -19,6 +19,9 @@
         },
         "vnetName": {
             "value": "__CORE_VNET_NAME__"
+        },
+        "sharedEventHubNamespaceName": {
+            "value": "__CORE_SHARED_EVENT_HUB_NAMESPACE_NAME__"
         }
     }
 }

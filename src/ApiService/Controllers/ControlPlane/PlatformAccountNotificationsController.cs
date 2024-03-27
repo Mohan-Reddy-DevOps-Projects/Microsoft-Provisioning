@@ -22,7 +22,6 @@ using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.EventHub;
 using Microsoft.Purview.DataGovernance.EventHub.Models.Events;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using Microsoft.Purview.DataGovernance.Common;
 
 /// <summary>
