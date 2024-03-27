@@ -47,8 +47,8 @@ resource acr 'Microsoft.ContainerRegistry/registries@2022-12-01' = {
   }
 }
 
-module eventHubNamespaceRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
-  name: 'sharedEventHubNamespaceRoleDeploy'
+module eventHubNamespaceReceiverRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
+  name: 'sharedEventHubNamespaceReceiverRoleDeploy'
   scope: resourceGroup(coreResourceGroupName)
   params: {
     eventHubNamespaceName: sharedEventHubNamespaceName
@@ -57,8 +57,8 @@ module eventHubNamespaceRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
   }
 }
 
-module eventHubNamespaceRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
-  name: 'sharedEventHubNamespaceRoleDeploy'
+module eventHubNamespaceSenderRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
+  name: 'sharedEventHubNamespaceSenderRoleDeploy'
   scope: resourceGroup(coreResourceGroupName)
   params: {
     eventHubNamespaceName: sharedEventHubNamespaceName
