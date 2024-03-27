@@ -4,6 +4,8 @@
 
 namespace Microsoft.Purview.DataGovernance.Provisioning.ApiService;
 
+using Microsoft.Purview.DataGovernance.EventHub;
+
 /// <summary>
 /// Extension methods for configuring the Api Service.
 /// </summary>
@@ -16,6 +18,8 @@ public static class ApiService
     public static IServiceCollection AddApiServices(
         this IServiceCollection services)
     {
+        services.AddSingleton<IEventPublisher, EventHubPublisher>();
+
         return services;
     }
 }
