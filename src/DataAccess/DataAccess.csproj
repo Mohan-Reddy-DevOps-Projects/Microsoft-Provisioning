@@ -16,6 +16,5 @@
     <PackageReference Include="Azure.Identity" />
     <PackageReference Include="Microsoft.AspNetCore.OData" />
     <PackageReference Include="Microsoft.Azure.Purview.ExposureControlLibrary" />
-    <PackageReference Include="Microsoft.Purview.DataGovernance.Reporting" />
   </ItemGroup>
 </Project>
