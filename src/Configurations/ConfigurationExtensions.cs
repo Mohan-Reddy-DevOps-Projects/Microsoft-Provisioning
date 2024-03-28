@@ -7,6 +7,7 @@ namespace Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Purview.DataGovernance.Common.Configuration;
+using Microsoft.Purview.DataGovernance.EventHub.Configuration;
 
 /// <summary>
 /// Extension methods for adding configurations
@@ -45,7 +46,8 @@ public static class ConfigurationExtensions
             .Configure<ProcessingStorageAuthConfiguration>(configuration.GetSection("processingStorageAuth"))
             .Configure<MetadataServiceConfiguration>(configuration.GetSection("metadataService"))
             .Configure<ExposureControlConfiguration>(configuration.GetSection("exposureControl"))
-            .Configure<KeyVaultConfiguration>(configuration.GetSection("keyVault"));
+            .Configure<KeyVaultConfiguration>(configuration.GetSection("keyVault"))
+            .Configure<EventHubPublisherConfiguration>(configuration.GetSection("provisionChangePublisher"));
 
         return services;
     }

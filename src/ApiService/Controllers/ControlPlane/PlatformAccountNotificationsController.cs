@@ -19,6 +19,10 @@ using System.Collections.Concurrent;
 using Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
 using Microsoft.Purview.DataGovernance.Provisioning.Models;
 using Microsoft.Purview.DataGovernance.Loggers;
+using Microsoft.Purview.DataGovernance.EventHub;
+using Microsoft.Purview.DataGovernance.EventHub.Models.Events;
+using System.Globalization;
+using Microsoft.Purview.DataGovernance.Common;
 
 /// <summary>
 /// Purview account notifications controller.
@@ -29,10 +33,12 @@ using Microsoft.Purview.DataGovernance.Loggers;
 public class PlatformAccountNotificationsController : ControlPlaneController
 {
     private readonly IServiceRequestLogger logger;
+    private readonly IRequestContextAccessor requestContextAccessor;
     private readonly IPartnerService<AccountServiceModel, IPartnerDetails> partnerService;
     private readonly PartnerConfig<IPartnerDetails> partnerConfig;
     private readonly IAccountExposureControlConfigProvider exposureControl;
     private readonly IProcessingStorageManager processingStorageManager;
+    private readonly IEventPublisher eventPublisher;
 
     /// <summary>
     /// Instantiate instance of PlatformAccountNotificationsController.
@@ -42,13 +48,17 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         IAccountExposureControlConfigProvider exposureControl,
         IOptions<PartnerConfiguration> partnerConfiguration,
         IServiceRequestLogger logger,
-        IProcessingStorageManager processingStorageManager)
+        IRequestContextAccessor requestContextAccessor,
+        IProcessingStorageManager processingStorageManager,
+        IEventPublisher eventPublisher)
     {
         this.logger = logger;
+        this.requestContextAccessor = requestContextAccessor;
         this.partnerService = partnerService;
         this.exposureControl = exposureControl;
         this.partnerConfig = new(partnerConfiguration);
         this.processingStorageManager = processingStorageManager;
+        this.eventPublisher = eventPublisher;
     }
 
     /// <summary>
@@ -135,6 +145,13 @@ public class PlatformAccountNotificationsController : ControlPlaneController
             return this.Ok();
         }
 
+        DataChangeEventPayload<AccountServiceModel> payload = new()
+        {
+            After = account
+        };
+        DataChangeEvent<AccountServiceModel> deleteEvent = this.AccountDeleteEvent(account, payload);
+        await this.eventPublisher.PublishChangeEvent(deleteEvent);
+
         await this.processingStorageManager.Delete(account, cancellationToken);
 
         await PartnerNotifier.NotifyPartners(
@@ -146,6 +163,25 @@ public class PlatformAccountNotificationsController : ControlPlaneController
                 InitPartnerContext(this.partnerConfig.Partners)).ConfigureAwait(false);
 
         return this.Ok();
+    }
+
+    private DataChangeEvent<T> AccountDeleteEvent<T>(AccountServiceModel account, DataChangeEventPayload<T> payload) where T : class
+    {
+        IRequestHeaderContext requestContext = this.requestContextAccessor.GetRequestContext();
+
+        return new DataChangeEvent<T>()
+        {
+            EventId = Guid.NewGuid().ToString(),
+            CorrelationId = requestContext.CorrelationId,
+            AccountId = account.Id,
+            TenantId = account.TenantId,
+            EventSource = "Provision",
+            PreciseTimestamp = DateTime.UtcNow.ToUniversalTime().ToString("O", CultureInfo.InvariantCulture),
+            OperationType = EventHub.Models.Events.OperationType.Delete,
+            PayloadKind = PayloadKind.ResourceProviderAccount,
+            Payload = payload,
+            ChangedBy = requestContext.ClientObjectId,
+        };
     }
 
     /// <summary>

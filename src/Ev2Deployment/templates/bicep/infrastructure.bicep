@@ -5,8 +5,11 @@ param coreResourceGroupName string
 param keyVaultName string
 param location string = resourceGroup().location
 param vnetName string
+param sharedEventHubNamespaceName string
 
 var contributorRoleDefName = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+var azureEventHubsDataReceiverRoleDefName = 'a638d3c7-ab3a-418d-83e6-5f17a39d4fde'
+var azureEventHubsDataSenderRoleDefName = '2b629674-e913-4c01-ae53-ef4638d8f975'
 var keyVaultReaderRoleDefName = '21090545-7ca7-4776-b22c-e363652d74d2'
 var keyVaultSecretsOfficerRoleDefName = 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7'
 var keyVaultCertificatesUserRoleDefName = 'db79e9a7-68ee-4b58-9aeb-b90e7c24fcba'
@@ -41,6 +44,26 @@ resource acr 'Microsoft.ContainerRegistry/registries@2022-12-01' = {
     dataEndpointEnabled: false
     publicNetworkAccess: 'Enabled'
     zoneRedundancy: 'Disabled'
+  }
+}
+
+module eventHubNamespaceReceiverRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
+  name: 'sharedEventHubNamespaceReceiverRoleDeploy'
+  scope: resourceGroup(coreResourceGroupName)
+  params: {
+    eventHubNamespaceName: sharedEventHubNamespaceName
+    principalId: containerAppIdentity.properties.principalId
+    roleDefinitionName: azureEventHubsDataReceiverRoleDefName
+  }
+}
+
+module eventHubNamespaceSenderRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
+  name: 'sharedEventHubNamespaceSenderRoleDeploy'
+  scope: resourceGroup(coreResourceGroupName)
+  params: {
+    eventHubNamespaceName: sharedEventHubNamespaceName
+    principalId: containerAppIdentity.properties.principalId
+    roleDefinitionName: azureEventHubsDataSenderRoleDefName
   }
 }
 
