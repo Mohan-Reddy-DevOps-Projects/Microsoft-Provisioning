@@ -10,15 +10,10 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Core" />
-    <PackageReference Include="Azure.Identity" />
     <PackageReference Include="Microsoft.Azure.Management.ResourceManager.Fluent" />
     <PackageReference Include="Microsoft.Purview.DataGovernance.EventHub" />
-    <PackageReference Include="Microsoft.Rest.ClientRuntime" />
-    <PackageReference Include="Microsoft.WindowsAzure.ResourceStack" />
     <PackageReference Include="Polly.Contrib.WaitAndRetry" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" />
-    <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BaseServices\" />
