@@ -8,7 +8,6 @@ using Microsoft.Azure.ProjectBabylon.Metadata.Models;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
-
 using System.Globalization;
 using System.Net;
 
@@ -23,11 +22,13 @@ internal sealed class AccountPartnerService : PartnerServiceBase, IPartnerServic
     /// <param name="requestHeaderContext">The request header context.</param>
     /// <param name="httpClientFactory">The HTTP client factory.</param>
     /// <param name="logger">The ifx logger.</param>
+    /// <param name="otelInstrumentation">The otel instrumentation.</param>
     public AccountPartnerService(
         IRequestHeaderContext requestHeaderContext,
         IHttpClientFactory httpClientFactory,
-        IServiceRequestLogger logger)
-        : base(requestHeaderContext, logger, httpClientFactory)
+        IServiceRequestLogger logger,
+        IOtelInstrumentation otelInstrumentation)
+        : base(requestHeaderContext, logger, httpClientFactory, otelInstrumentation)
     {
     }
 

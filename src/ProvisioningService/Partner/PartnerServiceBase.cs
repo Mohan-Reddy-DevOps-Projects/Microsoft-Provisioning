@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Microsoft.Identity.Client;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
@@ -30,6 +31,7 @@ internal abstract class PartnerServiceBase
 
     private readonly IServiceRequestLogger logger;
     private readonly IHttpClientFactory httpClientFactory;
+    private readonly IOtelInstrumentation otelInstrumentation;
 
     /// <summary>
     /// Name of the partner http client
@@ -50,11 +52,13 @@ internal abstract class PartnerServiceBase
     public PartnerServiceBase(
         IRequestHeaderContext requestHeaderContext,
         IServiceRequestLogger logger,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        IOtelInstrumentation otelInstrumentation)
     {
         this.RequestHeaderContext = requestHeaderContext;
         this.logger = logger;
         this.httpClientFactory = httpClientFactory;
+        this.otelInstrumentation = otelInstrumentation;
     }
 
     /// <summary>
@@ -133,6 +137,25 @@ internal abstract class PartnerServiceBase
             string errorMessage = $"Error on operation:{operation}, partner:{partnerName}, endpoint:{endpoint}. Duration {sw.ElapsedMilliseconds} ms";
             if (validateResponse)
             {
+                //Emit provisioning error metric
+                this.otelInstrumentation.EmitCounter(
+                "PartnerProvisioningError",
+                new Dictionary<string, string>
+                {
+                    {
+                        "Operation", operation
+                    },
+                    {
+                        "ErrorMessage", errorMessage
+                    },
+                    {
+                        "PartnerName", partnerName
+                    },
+                    {
+                        "Endpoint", endpoint
+                    }
+                });
+
                 this.logger.LogInformation(errorMessage, e);
 
                 // If already a babylon exception throw existing.
