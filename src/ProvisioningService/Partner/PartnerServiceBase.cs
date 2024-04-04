@@ -9,13 +9,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Identity.Client;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
 using Microsoft.WindowsAzure.ResourceStack.Common.Instrumentation;
-using Newtonsoft.Json;
 using ErrorModel = Common.ErrorModel;
 
 /// <summary>
@@ -82,6 +81,7 @@ internal abstract class PartnerServiceBase
         bool validateResponse,
         int operationTimeoutSeconds,
         HttpStatusCode[] validHttpStatusResponses = null,
+        string partnerRoutingId = "",
         int pollingTimeoutSeconds = DefaultPollingTimeoutSeconds,
         int pollingIntervalSeconds = DefaultPollingIntervalSeconds,
         [CallerMemberName] string operation = "")
@@ -138,9 +138,7 @@ internal abstract class PartnerServiceBase
             if (validateResponse)
             {
                 //Emit provisioning error metric
-                this.otelInstrumentation.EmitCounter(
-                "PartnerProvisioningError",
-                new Dictionary<string, string>
+                Dictionary<string, string> dimensions = new Dictionary<string, string>
                 {
                     {
                         "Operation", operation
@@ -153,10 +151,15 @@ internal abstract class PartnerServiceBase
                     },
                     {
                         "Endpoint", endpoint
+                    },
+                    {
+                        "RoutingId", partnerRoutingId
                     }
-                });
+                };
 
+                this.logger.LogInformation($"{JsonSerializer.Serialize(dimensions)}");
                 this.logger.LogInformation(errorMessage, e);
+                this.otelInstrumentation.EmitCounter("PartnerProvisioningError", dimensions);
 
                 // If already a babylon exception throw existing.
                 // Else create new on service unavailable.

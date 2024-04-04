@@ -38,4 +38,9 @@ public interface IPartnerDetails
     /// Gets the partner dependencies.
     /// </summary>
     string[] DependsOn { get; }
+
+    /// <summary>
+    /// Gets the partner service Routing Id
+    /// </summary>
+    string RoutingId { get; }
 }

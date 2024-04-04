@@ -37,4 +37,9 @@ public class PartnerDetails : IPartnerDetails
     /// <inheritdoc />
     [JsonProperty("dependsOn")]
     public string[] DependsOn { get; set; }
+    
+    /// <inheritdoc />
+    [DefaultValue("PDG-Tip-Provisioning")]
+    [JsonProperty("routingId", DefaultValueHandling = DefaultValueHandling.Populate)]
+    public string RoutingId { get; set; }
 }

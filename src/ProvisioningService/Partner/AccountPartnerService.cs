@@ -54,7 +54,8 @@ internal sealed class AccountPartnerService : PartnerServiceBase, IPartnerServic
                 partnerDetails.Endpoint,
                 partnerDetails.ValidateResponse,
                 partnerDetails.CreateOrUpdateTimeoutSeconds,
-                new[] { HttpStatusCode.OK, HttpStatusCode.Created, HttpStatusCode.NoContent }).ConfigureAwait(false);
+                new[] { HttpStatusCode.OK, HttpStatusCode.Created, HttpStatusCode.NoContent },
+                partnerDetails.RoutingId).ConfigureAwait(false);
             onSuccess?.Invoke(partnerDetails.Name);
         }
     }
@@ -85,7 +86,8 @@ internal sealed class AccountPartnerService : PartnerServiceBase, IPartnerServic
                 partnerDetails.Endpoint,
                 partnerDetails.ValidateResponse,
                 partnerDetails.DeleteTimeoutSeconds,
-                new[] { HttpStatusCode.OK, HttpStatusCode.NoContent, HttpStatusCode.NotFound }).ConfigureAwait(false);
+                new[] { HttpStatusCode.OK, HttpStatusCode.NoContent, HttpStatusCode.NotFound },
+                partnerDetails.RoutingId).ConfigureAwait(false);
             onSuccess?.Invoke(partnerDetails.Name);
         }
     }
