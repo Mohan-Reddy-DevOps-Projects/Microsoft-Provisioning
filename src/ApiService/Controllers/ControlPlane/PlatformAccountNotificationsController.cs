@@ -23,6 +23,7 @@ using Microsoft.Purview.DataGovernance.EventHub;
 using Microsoft.Purview.DataGovernance.EventHub.Models.Events;
 using System.Globalization;
 using Microsoft.Purview.DataGovernance.Common;
+using Microsoft.Purview.DataGovernance.Provisioning.Common;
 
 /// <summary>
 /// Purview account notifications controller.
@@ -85,12 +86,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
             return this.Ok();
         }
 
-        if (!this.exposureControl.IsDataGovProvisioningServiceEnabled(account.Id, account.SubscriptionId, account.TenantId))
-        {
-            return this.Ok();
-        }
-
-        await this.processingStorageManager.Provision(account, cancellationToken);
+        string responseStatus = await this.processingStorageManager.Provision(account, cancellationToken);
         Task partnerTask = PartnerNotifier.NotifyPartners(
                 this.logger,
                 this.partnerService,
@@ -106,7 +102,9 @@ public class PlatformAccountNotificationsController : ControlPlaneController
 
         await Task.WhenAll(tasks);
 
-        return this.Ok();
+        this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ResponseCode: {responseStatus}");
+
+        return responseStatus.Equals(ResponseStatus.Created) ? this.Created() : this.Ok();
     }
 
     /// <summary>
@@ -140,11 +138,6 @@ public class PlatformAccountNotificationsController : ControlPlaneController
             return this.Ok();
         }
 
-        if (!this.exposureControl.IsDataGovProvisioningServiceEnabled(account.Id, account.SubscriptionId, account.TenantId))
-        {
-            return this.Ok();
-        }
-
         DataChangeEventPayload<AccountServiceModel> payload = new()
         {
             After = account
@@ -152,7 +145,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         DataChangeEvent<AccountServiceModel> deleteEvent = this.AccountDeleteEvent(account, payload);
         await this.eventPublisher.PublishChangeEvent(deleteEvent);
 
-        await this.processingStorageManager.Delete(account, cancellationToken);
+        DeletionResult deletionResult = await this.processingStorageManager.Delete(account, cancellationToken);
 
         await PartnerNotifier.NotifyPartners(
                 this.logger,
@@ -162,7 +155,14 @@ public class PlatformAccountNotificationsController : ControlPlaneController
                 ProvisioningService.OperationType.Delete,
                 InitPartnerContext(this.partnerConfig.Partners)).ConfigureAwait(false);
 
-        return this.Ok();
+        this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: StatusCode: {deletionResult.DeletionStatus}");
+
+        return deletionResult.DeletionStatus switch
+        {
+            DeletionStatus.ResourceNotFound => this.NoContent(),
+            DeletionStatus.Deleted => this.Ok(),
+            _ => this.Ok(),
+        };
     }
 
     private DataChangeEvent<T> AccountDeleteEvent<T>(AccountServiceModel account, DataChangeEventPayload<T> payload) where T : class

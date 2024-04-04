@@ -19,7 +19,6 @@ using Microsoft.Azure.ProjectBabylon.Metadata.Models;
 using Microsoft.Purview.DataGovernance.Provisioning.Common.Utilities;
 using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Models;
 using Microsoft.Extensions.Options;
 using ProcessingStorageModel = Models.ProcessingStorageModel;
@@ -27,6 +26,7 @@ using StorageAccountKey = global::Azure.ResourceManager.Storage.Models.StorageAc
 using StorageSasRequest = Models.StorageSasRequest;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
+using Microsoft.Purview.DataGovernance.Provisioning.Common;
 
 /// <summary>
 /// Processing storage manager.
@@ -99,7 +99,7 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
     }
 
     /// <inheritdoc/>
-    public async Task Provision(AccountServiceModel accountServiceModel, CancellationToken cancellationToken)
+    public async Task<string> Provision(AccountServiceModel accountServiceModel, CancellationToken cancellationToken)
     {
         string resourceId = $"/subscriptions/{this.storageConfiguration.SubscriptionId}";
         SubscriptionResource subscription = this.azureResourceManager.GetSubscription(resourceId);
@@ -116,9 +116,11 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         UpsertStorageResource upsertStorage = await this.CreateOrUpdateStorageResource(processingStorageModelRequest, subscription, resourceGroup, existingStorageModel, cancellationToken);
         ProcessingStorageModel newStorageModel = this.ToModel(upsertStorage.StorageAccount, accountServiceModel, existingStorageModel);
 
+        string responseCode = ResponseStatus.Created;
         // only persist the model definition if the storage account is successfully created along with all the other resources
         if (upsertStorage.Update)
         {
+            responseCode = ResponseStatus.Updated;
             await this.storageAccountRepository.Update(newStorageModel, accountServiceModel.Id, cancellationToken);
         }
         else
@@ -140,6 +142,8 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
             await this.storageAccountRepository.Create(newStorageModel, accountServiceModel.Id, cancellationToken);
         }
         this.logger.LogInformation($"Successfully created storage account {newStorageModel.Properties.ResourceId}");
+
+        return responseCode;
     }
 
     /// <inheritdoc/>

@@ -37,7 +37,7 @@ public interface IProcessingStorageManager
     /// <param name="accountServiceModel"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task Provision(AccountServiceModel accountServiceModel, CancellationToken cancellationToken);
+    Task<string> Provision(AccountServiceModel accountServiceModel, CancellationToken cancellationToken);
 
     /// <summary>
     /// Delete default storage account.
