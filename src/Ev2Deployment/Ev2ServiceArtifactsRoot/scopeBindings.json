@@ -76,7 +76,7 @@
             },
             {
               "find": "__CORE_SHARED_EVENT_HUB_NAMESPACE_NAME__",
-              "replaceWith": "$config(pdg.regionSharedInfrastructure.eventHub.name)"
+              "replaceWith": "$config(pdg.regionSharedInfrastructure.eventHub.alias)"
             }
         ]
     },
