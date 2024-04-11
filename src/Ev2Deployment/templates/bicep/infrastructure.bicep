@@ -2,6 +2,8 @@ param acrName string
 param assistedIdAppObjectId string
 param containerAppIdentityName string
 param coreResourceGroupName string
+param catalogResourceGroupName string
+param catalogSubscriptionId string
 param keyVaultName string
 param location string = resourceGroup().location
 param vnetName string
@@ -49,7 +51,7 @@ resource acr 'Microsoft.ContainerRegistry/registries@2022-12-01' = {
 
 module eventHubNamespaceReceiverRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
   name: 'sharedEventHubNamespaceReceiverRoleDeploy'
-  scope: resourceGroup(coreResourceGroupName)
+  scope: resourceGroup(catalogSubscriptionId, catalogResourceGroupName)
   params: {
     eventHubNamespaceName: sharedEventHubNamespaceName
     principalId: containerAppIdentity.properties.principalId
@@ -59,7 +61,7 @@ module eventHubNamespaceReceiverRoleModule 'eventHubNamespaceRoleAssignment.bice
 
 module eventHubNamespaceSenderRoleModule 'eventHubNamespaceRoleAssignment.bicep' = {
   name: 'sharedEventHubNamespaceSenderRoleDeploy'
-  scope: resourceGroup(coreResourceGroupName)
+  scope: resourceGroup(catalogSubscriptionId, catalogResourceGroupName)
   params: {
     eventHubNamespaceName: sharedEventHubNamespaceName
     principalId: containerAppIdentity.properties.principalId

@@ -22,6 +22,12 @@
         },
         "sharedEventHubNamespaceName": {
             "value": "__CORE_SHARED_EVENT_HUB_NAMESPACE_NAME__"
+        },
+        "catalogResourceGroupName": {
+            "value": "__CORE_CATALOG_RESOURCE_GROUP_NAME__"
+        },
+        "catalogSubscriptionId": {
+            "value": "__CORE_CATALOG_SUBSCRIPTION_ID__"
         }
     }
 }

@@ -71,6 +71,14 @@
                 "replaceWith": "$config(pdg.regionSharedInfrastructure.resourceGroupNames.sharedInfra)"
             },
             {
+              "find": "__CORE_CATALOG_RESOURCE_GROUP_NAME__",
+              "replaceWith": "$config(pdg.firstParty.catalog.resourceGroupName)"
+            },
+            {
+              "find": "__CORE_CATALOG_SUBSCRIPTION_ID__",
+              "replaceWith": "$config(pdg.firstParty.catalog.subscriptionId)"
+            },
+            {
                 "find": "__CORE_VNET_NAME__",
                 "replaceWith": "$config(pdg.regionSharedInfrastructure.vnet.name)"
             },
