@@ -127,8 +127,8 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         CancellationToken cancellationToken)
     {
         this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku?.Name}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
-
-        if (operation == OperationType.SoftDelete || account.IsFreeTier() || !account.IsReconciled())
+        bool isInvalidReconcileState = !(account.IsReconciled() || account.IsInactiveReconcile());
+        if (operation == OperationType.SoftDelete || account.IsFreeTier() || isInvalidReconcileState)
         {
             return this.Ok();
         }

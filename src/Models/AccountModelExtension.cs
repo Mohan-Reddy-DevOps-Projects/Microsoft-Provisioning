@@ -26,4 +26,9 @@ public static class AccountModelExtension
     {
         return string.Equals(accountModel.ReconciliationConfig?.ReconciliationStatus, ReconciliationStatus.Active, StringComparison.OrdinalIgnoreCase);
     }
+
+    public static bool IsInactiveReconcile(this AccountServiceModel accountModel)
+    {
+        return string.Equals(accountModel.ReconciliationConfig?.ReconciliationStatus, ReconciliationStatus.Inactive, StringComparison.OrdinalIgnoreCase);
+    }
 }
