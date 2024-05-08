@@ -76,8 +76,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
     {
         this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku?.Name}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
 
-        bool isInvalidReconcileState = !(account.IsReconciled() || account.IsInactiveReconcile());
-        if (account.ProvisioningState != ProvisioningState.Creating || account.IsFreeTier() || isInvalidReconcileState)
+        if (account.ProvisioningState != ProvisioningState.Creating || account.IsFreeTier() || !account.IsReconciled())
         {
             return this.Ok();
         }
@@ -87,14 +86,22 @@ public class PlatformAccountNotificationsController : ControlPlaneController
             return this.Ok();
         }
 
-        if (account.IsInactiveReconcile())
-        {
-            DeletionResult deletionResult = await this.Delete(account, cancellationToken);
-            this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ResponseCode: {deletionResult.DeletionStatus}");
-            return this.Ok();
-        }
+        string responseStatus = await this.processingStorageManager.Provision(account, cancellationToken);
+        Task partnerTask = PartnerNotifier.NotifyPartners(
+                this.logger,
+                this.partnerService,
+                this.partnerConfig,
+                account,
+                ProvisioningService.OperationType.CreateOrUpdate,
+                InitPartnerContext(this.partnerConfig.Partners));
 
-        string responseStatus = await this.Create(account, cancellationToken);
+        List<Task> tasks = new()
+        {
+            partnerTask
+        };
+
+        await Task.WhenAll(tasks);
+
         this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ResponseCode: {responseStatus}");
 
         return responseStatus.Equals(ResponseStatus.Created) ? this.Created() : this.Ok();
@@ -131,40 +138,6 @@ public class PlatformAccountNotificationsController : ControlPlaneController
             return this.Ok();
         }
 
-        DeletionResult deletionResult = await this.Delete(account, cancellationToken);
-        this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: StatusCode: {deletionResult.DeletionStatus}");
-
-        return deletionResult.DeletionStatus switch
-        {
-            DeletionStatus.ResourceNotFound => this.NoContent(),
-            DeletionStatus.Deleted => this.Ok(),
-            _ => this.Ok(),
-        };
-    }
-
-    private async Task<string> Create(AccountServiceModel account, CancellationToken cancellationToken)
-    {
-        string responseStatus = await this.processingStorageManager.Provision(account, cancellationToken);
-        Task partnerTask = PartnerNotifier.NotifyPartners(
-                this.logger,
-                this.partnerService,
-                this.partnerConfig,
-                account,
-                ProvisioningService.OperationType.CreateOrUpdate,
-                InitPartnerContext(this.partnerConfig.Partners));
-
-        List<Task> tasks = new()
-        {
-            partnerTask
-        };
-
-        await Task.WhenAll(tasks);
-
-        return responseStatus;
-    }
-
-    private async Task<DeletionResult> Delete(AccountServiceModel account, CancellationToken cancellationToken)
-    {
         DataChangeEventPayload<AccountServiceModel> payload = new()
         {
             After = account
@@ -182,9 +155,15 @@ public class PlatformAccountNotificationsController : ControlPlaneController
                 ProvisioningService.OperationType.Delete,
                 InitPartnerContext(this.partnerConfig.Partners)).ConfigureAwait(false);
 
-        return deletionResult;
-    }
+        this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: StatusCode: {deletionResult.DeletionStatus}");
 
+        return deletionResult.DeletionStatus switch
+        {
+            DeletionStatus.ResourceNotFound => this.NoContent(),
+            DeletionStatus.Deleted => this.Ok(),
+            _ => this.Ok(),
+        };
+    }
 
     private DataChangeEvent<T> AccountDeleteEvent<T>(AccountServiceModel account, DataChangeEventPayload<T> payload) where T : class
     {
