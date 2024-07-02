@@ -22,6 +22,7 @@ using ErrorModel = Common.ErrorModel;
 /// </summary>
 internal abstract class PartnerServiceBase
 {
+    private const int DefaultTimeoutValue = 180;
     // default values and boundaries for polling
     private const int DefaultPollingTimeoutSeconds = 1800;   // 30 min
     private const int DefaultPollingIntervalSeconds = 30;   // 30 sec
@@ -87,6 +88,11 @@ internal abstract class PartnerServiceBase
         [CallerMemberName] string operation = "")
     {
         var sw = Stopwatch.StartNew();
+        if (operationTimeoutSeconds <= 0)
+        {
+            this.logger.LogWarning($"OperationTimeoutSeconds for partner {partnerName} is {operationTimeoutSeconds}, correcting to default value: {DefaultTimeoutValue}.");
+            operationTimeoutSeconds = DefaultTimeoutValue;
+        }
         this.logger.LogInformation($"Invoking operation:{operation} on partner:{partnerName}, endpoint:{endpoint}, timeout:{operationTimeoutSeconds}");
 
         // If no valid http response, default to accepting 200.
