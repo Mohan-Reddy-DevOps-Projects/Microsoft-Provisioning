@@ -1,18 +1,20 @@
 {
     "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/ConfigurationSpecification.json",
     "settings": {
-        "dgprov": {
-            "powerBiClientId": "28456abb-1abf-47c1-abc3-acb68b96484e",
-            "dgFPAClientId": "6afef871-d95c-4232-91b2-62e704ccaafa",
-            "powerBiEnabled": "true",
-            "resourceGroupName": "dgprov-prod-$(regionName)-rg",
-            "serverlessPoolEnabled": "true",
-            "serviceShortName": "dgprov",
-            "subdomainName": "prod-$(regionName)-prov",
-            "useEstsr": "true",
-            "acrName":"$(pdg.groupName)dgprovacr$(pdg.environment.shortName)$(regionShortName)",
-            "apiServiceReadinessProbePort": 8081
-        }
+      "dgprov": {
+        "powerBiClientId": "28456abb-1abf-47c1-abc3-acb68b96484e",
+        "dgFPAClientId": "6afef871-d95c-4232-91b2-62e704ccaafa",
+        "powerBiEnabled": "true",
+        "resourceGroupName": "dgprov-prod-$(regionName)-rg",
+        "serverlessPoolEnabled": "true",
+        "serviceShortName": "dgprov",
+        "subdomainName": "prod-$(regionName)-prov",
+        "useEstsr": "true",
+        "acrName": "$(pdg.groupName)dgprovacr$(pdg.environment.shortName)$(regionShortName)",
+        "apiServiceReadinessProbePort": 8081,
+        "commonStorageAccountName": "$(pdg.environment.shortName)$(regionShortName)common",
+        "catalogConfigTableName": "CatalogConfigTable"
+      }
     },
     "geographies": [
         {

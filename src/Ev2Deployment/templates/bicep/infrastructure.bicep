@@ -8,6 +8,8 @@ param keyVaultName string
 param location string = resourceGroup().location
 param vnetName string
 param sharedEventHubNamespaceName string
+param commonStorageAccountName string
+param catalogConfigTableName string
 
 var contributorRoleDefName = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
 var azureEventHubsDataReceiverRoleDefName = 'a638d3c7-ab3a-418d-83e6-5f17a39d4fde'
@@ -129,6 +131,24 @@ module keyVaultCertificatesOfficerRoleModule 'keyVaultRoleAssignment.bicep' = {
     keyVaultName: keyVault.name
     principalId: assistedIdAppObjectId
     roleDefinitionName: keyVaultCertificatesOfficerRoleDefName
+  }
+}
+
+module commonStorageAccountModule 'storageAccount.bicep' = {
+  name: 'commonStorageAccountDeploy'
+  params: {
+    location: location
+    storageAccountName: commonStorageAccountName
+    commonSubnetId: vnet.properties.subnets[0].id
+    deploySubnetId: vnet.properties.subnets[1].id
+  }
+}
+
+module catalogConfigTableModule 'storageTable.bicep' = {
+  name: 'catalogConfigTableDeploy'
+  params: {
+    storageAccountName: commonStorageAccountModule.outputs.storageAccountName
+    tableName: catalogConfigTableName
   }
 }
 

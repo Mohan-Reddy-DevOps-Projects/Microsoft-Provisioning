@@ -11,6 +11,11 @@ public static class ResourceIds
     public const string ProcessingStorage = "processingStorage/{0}";
 
     /// <summary>
+    /// The catalog config
+    /// </summary>
+    public const string CatalogConfig = "catalogConfig/{0}";
+
+    /// <summary>
     /// Create a formatted resource id.
     /// </summary>
     /// <param name="resourceType"></param>

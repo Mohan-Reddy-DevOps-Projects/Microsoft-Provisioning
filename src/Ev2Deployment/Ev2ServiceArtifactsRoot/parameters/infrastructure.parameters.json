@@ -27,7 +27,10 @@
             "value": "__CORE_CATALOG_RESOURCE_GROUP_NAME__"
         },
         "catalogSubscriptionId": {
-            "value": "__CORE_CATALOG_SUBSCRIPTION_ID__"
+          "value": "__CORE_CATALOG_SUBSCRIPTION_ID__"
+        },
+        "catalogConfigTableName": {
+          "value": "__INFRA_CATALOG_CONFIG_TABLE_NAME__"
         }
     }
 }

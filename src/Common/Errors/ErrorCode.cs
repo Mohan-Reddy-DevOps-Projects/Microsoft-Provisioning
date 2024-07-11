@@ -162,7 +162,16 @@ public class ErrorCode : ServiceErrorCode
     public static readonly ErrorCode ArtifactStoreServiceException = new(6001);
 
     #endregion
-    
+
+    #region Config
+
+    /// <summary>
+    /// Error in reading certificate to key vault
+    /// </summary>
+    public static readonly ErrorCode Config_GetConfigError = new(70001);
+
+    #endregion
+
     #region Partner
 
     /// <summary>

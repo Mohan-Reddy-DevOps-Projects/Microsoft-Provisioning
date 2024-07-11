@@ -90,68 +90,72 @@
     },
     {
         "scopeTagName": "Infrastructure",
-        "bindings": [
-            {
-                "find": "__INFRA_API_SERVICE_CONTAINER_APP_NAME__",
-                "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-apiservice-ca"
-            },
-            {
-              "find": "\"__INFRA_API_SERVICE_CONTAINER_APP_READINESS_PORT__\"",
-              "replaceWith": "$config(dgprov.apiServiceReadinessProbePort)"
-            },
-            {
-                "find": "__INFRA_API_SERVICE_IMAGE_NAME__",
-                "replaceWith": "$config(dgprov.serviceShortName)-apiservice"
-            },
-            {
-                "find": "__INFRA_API_SERVICE_SUBDOMAIN_NAME__",
-                "replaceWith": "$config(dgprov.subdomainName)"
-            },
-            {
-                "find": "__INFRA_CONTAINER_APP_IDENTITY_NAME__",
-                "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-ca-identity"
-            },
-            {
-                "find": "__INFRA_IMAGE_TAG_NAME__",
-                "replaceWith": "$buildVersion()"
-            },
-            {
-                "find": "__INFRA_KEY_VAULT_NAME__",
-                "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv"
-            },
-            {
-                "find": "__INFRA_KEY_VAULT_URI__",
-                "replaceWith": "https://$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv.$config(keyVault.domainNameSuffix)"
-            },
-            {
-                "find": "__INFRA_RESOURCE_GROUP_NAME__",
-                "replaceWith": "$config(dgprov.resourceGroupName)"
-            },
-            {
-                "find": "__INFRA_SUBSCRIPTION_ID__",
-                "replaceWith": "$subscriptionId()"
-            },
-            {
-              "find": "__INFRA_ACR_NAME__",
-              "replaceWith": "$config(dgprov.acrName)"
-            },
-            {
-              "find": "__INFRA_CONTAINER_APP_CLIENT_ID__",
-              "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityClientId.value)"
-            },
-            {
-              "find": "__INFRA_CONTAINER_APP_OBJECT_ID__",
-              "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityObjectId.value)"
-            },
-            {
-              "find": "__INFRA_GENEVA_ERROR_LOG_TABLE_ID__",
-              "replaceWith": "$config(pdg.genevaAccountProvisioning.genevaLogTableIds.dgProvision-errorLog)"
-            },
-            {
-              "find": "__PROCESSING_STORAGE_SUBSCRIPTIONID__",
-              "replaceWith": "$subscriptionId()"
-            }
-        ]
+      "bindings": [
+        {
+          "find": "__INFRA_API_SERVICE_CONTAINER_APP_NAME__",
+          "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-apiservice-ca"
+        },
+        {
+          "find": "\"__INFRA_API_SERVICE_CONTAINER_APP_READINESS_PORT__\"",
+          "replaceWith": "$config(dgprov.apiServiceReadinessProbePort)"
+        },
+        {
+          "find": "__INFRA_API_SERVICE_IMAGE_NAME__",
+          "replaceWith": "$config(dgprov.serviceShortName)-apiservice"
+        },
+        {
+          "find": "__INFRA_API_SERVICE_SUBDOMAIN_NAME__",
+          "replaceWith": "$config(dgprov.subdomainName)"
+        },
+        {
+          "find": "__INFRA_CONTAINER_APP_IDENTITY_NAME__",
+          "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-ca-identity"
+        },
+        {
+          "find": "__INFRA_IMAGE_TAG_NAME__",
+          "replaceWith": "$buildVersion()"
+        },
+        {
+          "find": "__INFRA_KEY_VAULT_NAME__",
+          "replaceWith": "$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv"
+        },
+        {
+          "find": "__INFRA_KEY_VAULT_URI__",
+          "replaceWith": "https://$config(dgprov.serviceShortName)-$config(pdg.environment.shortName)-$config(regionShortName)-kv.$config(keyVault.domainNameSuffix)"
+        },
+        {
+          "find": "__INFRA_RESOURCE_GROUP_NAME__",
+          "replaceWith": "$config(dgprov.resourceGroupName)"
+        },
+        {
+          "find": "__INFRA_SUBSCRIPTION_ID__",
+          "replaceWith": "$subscriptionId()"
+        },
+        {
+          "find": "__INFRA_ACR_NAME__",
+          "replaceWith": "$config(dgprov.acrName)"
+        },
+        {
+          "find": "__INFRA_CONTAINER_APP_CLIENT_ID__",
+          "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityClientId.value)"
+        },
+        {
+          "find": "__INFRA_CONTAINER_APP_OBJECT_ID__",
+          "replaceWith": "$serviceResourceDefinition(infrastructureResourceDefinition).action(deploy).outputs(containerAppIdentityObjectId.value)"
+        },
+        {
+          "find": "__INFRA_GENEVA_ERROR_LOG_TABLE_ID__",
+          "replaceWith": "$config(pdg.genevaAccountProvisioning.genevaLogTableIds.dgProvision-errorLog)"
+        },
+        {
+          "find": "__PROCESSING_STORAGE_SUBSCRIPTIONID__",
+          "replaceWith": "$subscriptionId()"
+        },
+        {
+          "find": "__INFRA_CATALOG_CONFIG_TABLE_NAME__",
+          "replaceWith": "$config(dgprov.catalogConfigTableName)"
+        }
+      ]
     },
     {
       "scopeTagName": "Configuration",

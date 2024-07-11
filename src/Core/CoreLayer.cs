@@ -26,6 +26,7 @@ public static class CoreLayer
         services.AddSingleton<IKeyVaultAccessorService, KeyVaultAccessorService>();
         services.AddSingleton<ServiceHealthCheck>();
         services.AddSingleton<IProcessingStorageManager, ProcessingStorageManager>();
+        services.AddSingleton<ICatalogConfigService, CatalogConfigService>();
 
         services.AddScoped<IRequestHeaderContext, RequestHeaderContext>();
 

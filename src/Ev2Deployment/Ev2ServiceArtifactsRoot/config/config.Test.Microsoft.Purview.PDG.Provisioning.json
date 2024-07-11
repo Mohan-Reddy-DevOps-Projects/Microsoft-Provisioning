@@ -1,14 +1,16 @@
 {
     "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/ConfigurationSpecification.json",
     "settings": {
-        "dgprov": {
-            "acrName":"$(pdg.groupName)dgprovacr$(pdg.environment.shortName)$(regionShortName)",
-            "apiServiceReadinessProbePort": 8081,
-            "dgFPAClientId": "24676e7f-bd4d-4ae7-8782-dd551f44c6ce",
-            "resourceGroupName": "dgprov-dogfood-westus2-rg",
-            "serviceShortName": "dgprov",
-            "subdomainName": "df-westus2-prov",
-            "useEstsr": "false"
-        }
+      "dgprov": {
+        "acrName": "$(pdg.groupName)dgprovacr$(pdg.environment.shortName)$(regionShortName)",
+        "apiServiceReadinessProbePort": 8081,
+        "dgFPAClientId": "24676e7f-bd4d-4ae7-8782-dd551f44c6ce",
+        "resourceGroupName": "dgprov-dogfood-westus2-rg",
+        "serviceShortName": "dgprov",
+        "subdomainName": "df-westus2-prov",
+        "useEstsr": "false",
+        "commonStorageAccountName": "$(pdg.environment.shortName)$(regionShortName)common",
+        "catalogConfigTableName": "CatalogConfig"
+      }
     }
 }

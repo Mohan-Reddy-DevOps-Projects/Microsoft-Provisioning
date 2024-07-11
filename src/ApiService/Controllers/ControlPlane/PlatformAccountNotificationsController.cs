@@ -24,6 +24,7 @@ using Microsoft.Purview.DataGovernance.EventHub.Models.Events;
 using System.Globalization;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
+using Microsoft.Purview.DataGovernance.Provisioning.Core;
 
 /// <summary>
 /// Purview account notifications controller.
@@ -40,6 +41,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
     private readonly IAccountExposureControlConfigProvider exposureControl;
     private readonly IProcessingStorageManager processingStorageManager;
     private readonly IEventPublisher eventPublisher;
+    private readonly ICatalogConfigService catalogConfigService;
 
     /// <summary>
     /// Instantiate instance of PlatformAccountNotificationsController.
@@ -51,7 +53,8 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         IServiceRequestLogger logger,
         IRequestContextAccessor requestContextAccessor,
         IProcessingStorageManager processingStorageManager,
-        IEventPublisher eventPublisher)
+        IEventPublisher eventPublisher,
+        ICatalogConfigService catalogConfigService)
     {
         this.logger = logger;
         this.requestContextAccessor = requestContextAccessor;
@@ -60,6 +63,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         this.partnerConfig = new(partnerConfiguration);
         this.processingStorageManager = processingStorageManager;
         this.eventPublisher = eventPublisher;
+        this.catalogConfigService = catalogConfigService;
     }
 
     /// <summary>
@@ -87,6 +91,12 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         }
 
         string responseStatus = await this.processingStorageManager.Provision(account, cancellationToken);
+
+        if (this.exposureControl.IsDataGovAdminExperienceEnabled(account.Id, account.SubscriptionId, account.TenantId))
+        {
+            await this.catalogConfigService.CreateCatalogConfigAsync(account.Id, account.TenantId, cancellationToken);
+        }
+
         Task partnerTask = PartnerNotifier.NotifyPartners(
                 this.logger,
                 this.partnerService,
@@ -147,6 +157,11 @@ public class PlatformAccountNotificationsController : ControlPlaneController
 
         DeletionResult deletionResult = await this.processingStorageManager.Delete(account, cancellationToken);
 
+        if (this.exposureControl.IsDataGovAdminExperienceEnabled(account.Id, account.SubscriptionId, account.TenantId))
+        {
+            await this.catalogConfigService.DeleteCatalogConfigAsync(account.Id, cancellationToken);
+        }
+            
         await PartnerNotifier.NotifyPartners(
                 this.logger,
                 this.partnerService,

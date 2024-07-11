@@ -58,6 +58,13 @@ public static class DataAccessLayer
 
         services.AddSingleton<IStorageAccountRepository<ProcessingStorageModel>, ProcessingStorageRepository>();
 
+        services.AddSingleton<ITableStorageClient<CatalogConfigTableConfiguration>>(
+            ServiceProvider => new TableStorageClient<CatalogConfigTableConfiguration>(
+                ServiceProvider.GetRequiredService<IOptions<CatalogConfigTableConfiguration>>(),
+                ServiceProvider.GetRequiredService<AzureCredentialFactory>()));
+
+        services.AddSingleton<ICatalogConfigRepository, CatalogConfigRepository>();
+
         return services;
     }
 

@@ -47,7 +47,8 @@ public static class ConfigurationExtensions
             .Configure<MetadataServiceConfiguration>(configuration.GetSection("metadataService"))
             .Configure<ExposureControlConfiguration>(configuration.GetSection("exposureControl"))
             .Configure<KeyVaultConfiguration>(configuration.GetSection("keyVault"))
-            .Configure<EventHubPublisherConfiguration>(configuration.GetSection("provisionChangePublisher"));
+            .Configure<EventHubPublisherConfiguration>(configuration.GetSection("provisionChangePublisher"))
+            .Configure<CatalogConfigTableConfiguration>(configuration.GetSection("catalogConfigTable"));
 
         return services;
     }
