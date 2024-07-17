@@ -13,7 +13,7 @@
         "acrName": "$(pdg.groupName)dgprovacr$(pdg.environment.shortName)$(regionShortName)",
         "apiServiceReadinessProbePort": 8081,
         "commonStorageAccountName": "$(pdg.environment.shortName)$(regionShortName)common",
-        "catalogConfigTableName": "CatalogConfigTable"
+        "catalogConfigTableName": "CatalogConfig"
       }
     },
     "geographies": [

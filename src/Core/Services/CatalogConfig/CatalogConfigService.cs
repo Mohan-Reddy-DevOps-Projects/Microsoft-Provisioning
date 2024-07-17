@@ -26,6 +26,7 @@ public class CatalogConfigService : ICatalogConfigService
 
     public async Task<CatalogConfigModel> CreateCatalogConfigAsync(string accountId, string tenantId, CancellationToken cancellation)
     {
+        this.logger.LogInformation($"Creating catalog config for account: {accountId}");
         DateTime now = DateTime.UtcNow;
         var catalogConfigModel = new CatalogConfigModel()
         {
@@ -46,14 +47,18 @@ public class CatalogConfigService : ICatalogConfigService
             CreatedAt = now,
             ModifiedAt = now,
         };
-        return await this.catalogConfigRepository.Create(accountId, catalogConfigModel, cancellation).ConfigureAwait(false);
+        var config = await this.catalogConfigRepository.Create(accountId, catalogConfigModel, cancellation).ConfigureAwait(false);
+        this.logger.LogInformation($"Created catalog config for account: {accountId}, config: {config}");
+        return config;
     }
 
     public async Task DeleteCatalogConfigAsync(string accountId, CancellationToken cancellationToken)
     {
+        this.logger.LogInformation($"Deleting catalog config for account: {accountId}");
         try
         {
             await this.catalogConfigRepository.Delete(accountId, cancellationToken).ConfigureAwait(false);
+            this.logger.LogInformation($"Deleted catalog config for account: {accountId}");
         }
         catch (RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.NotFound)
         {
