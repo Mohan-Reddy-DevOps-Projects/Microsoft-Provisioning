@@ -12,7 +12,7 @@
         "useEstsr": "true",
         "acrName": "$(pdg.groupName)dgprovacr$(pdg.environment.shortName)$(regionShortName)",
         "apiServiceReadinessProbePort": 8081,
-        "commonStorageAccountName": "$(pdg.environment.shortName)-$(regionShortName)-prov-common",
+        "commonStorageAccountName": "$(pdg.environment.shortName)$(regionShortName)provcommon",
         "catalogConfigTableName": "CatalogConfig"
       }
     },
