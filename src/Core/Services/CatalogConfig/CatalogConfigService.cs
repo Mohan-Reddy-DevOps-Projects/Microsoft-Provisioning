@@ -24,9 +24,9 @@ public class CatalogConfigService : ICatalogConfigService
         this.logger = logger;
     }
 
-    public async Task<CatalogConfigModel> CreateCatalogConfigAsync(string accountId, string tenantId, CancellationToken cancellation)
+    public async Task CreateCatalogConfigAsync(string accountId, string tenantId, CancellationToken cancellation)
     {
-        this.logger.LogInformation($"Creating catalog config for account: {accountId}");
+        this.logger.LogInformation($"Creating catalog config.");
         DateTime now = DateTime.UtcNow;
         var catalogConfigModel = new CatalogConfigModel()
         {
@@ -47,22 +47,30 @@ public class CatalogConfigService : ICatalogConfigService
             CreatedAt = now,
             ModifiedAt = now,
         };
-        var config = await this.catalogConfigRepository.Create(accountId, catalogConfigModel, cancellation).ConfigureAwait(false);
-        this.logger.LogInformation($"Created catalog config for account: {accountId}, config: {config}");
-        return config;
+        try
+        {
+            var config = await this.catalogConfigRepository.Create(accountId, catalogConfigModel, cancellation).ConfigureAwait(false);
+            this.logger.LogInformation($"Created catalog config.");
+
+        } catch (RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.Conflict)
+        {
+            this.logger.LogInformation($"Catalog config already exists.");
+        }
+
+        return;
     }
 
     public async Task DeleteCatalogConfigAsync(string accountId, CancellationToken cancellationToken)
     {
-        this.logger.LogInformation($"Deleting catalog config for account: {accountId}");
+        this.logger.LogInformation($"Deleting catalog config.");
         try
         {
             await this.catalogConfigRepository.Delete(accountId, cancellationToken).ConfigureAwait(false);
-            this.logger.LogInformation($"Deleted catalog config for account: {accountId}");
+            this.logger.LogInformation($"Deleted catalog config.");
         }
         catch (RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.NotFound)
         {
-            this.logger.LogWarning($"Catalog config already deleted for accout: {accountId}");
+            this.logger.LogWarning($"Catalog config already deleted.");
         }
     }
 
