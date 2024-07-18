@@ -9,7 +9,7 @@
         "serviceShortName": "dgprov",
         "subdomainName": "df-westus2-prov",
         "useEstsr": "false",
-        "commonStorageAccountName": "$(pdg.environment.shortName)$(regionShortName)common",
+        "commonStorageAccountName": "$(pdg.environment.shortName)-$(regionShortName)-prov-common",
         "catalogConfigTableName": "CatalogConfig"
       }
     }
