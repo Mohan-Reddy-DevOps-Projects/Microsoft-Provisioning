@@ -1,36 +1,39 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-    "parameters": {
-        "acrName": {
-            "value": "__INFRA_ACR_NAME__"
-        },
-        "assistedIdAppObjectId": {
-            "value": "__ASSISTED_ID_APP_OBJECT_ID__"
-        },
-        "containerAppIdentityName": {
-            "value": "__INFRA_CONTAINER_APP_IDENTITY_NAME__"
-        },
-        "coreResourceGroupName": {
-            "value": "__CORE_RESOURCE_GROUP_NAME__"
-        },
-        "keyVaultName": {
-            "value": "__INFRA_KEY_VAULT_NAME__"
-        },
-        "vnetName": {
-            "value": "__CORE_VNET_NAME__"
-        },
-        "sharedEventHubNamespaceName": {
-            "value": "__CORE_SHARED_EVENT_HUB_NAMESPACE_NAME__"
-        },
-        "catalogResourceGroupName": {
-            "value": "__CORE_CATALOG_RESOURCE_GROUP_NAME__"
-        },
-        "catalogSubscriptionId": {
-          "value": "__CORE_CATALOG_SUBSCRIPTION_ID__"
-        },
-        "catalogConfigTableName": {
-          "value": "__INFRA_CATALOG_CONFIG_TABLE_NAME__"
-        }
+  "parameters": {
+    "acrName": {
+      "value": "__INFRA_ACR_NAME__"
+    },
+    "assistedIdAppObjectId": {
+      "value": "__ASSISTED_ID_APP_OBJECT_ID__"
+    },
+    "containerAppIdentityName": {
+      "value": "__INFRA_CONTAINER_APP_IDENTITY_NAME__"
+    },
+    "coreResourceGroupName": {
+      "value": "__CORE_RESOURCE_GROUP_NAME__"
+    },
+    "keyVaultName": {
+      "value": "__INFRA_KEY_VAULT_NAME__"
+    },
+    "vnetName": {
+      "value": "__CORE_VNET_NAME__"
+    },
+    "sharedEventHubNamespaceName": {
+      "value": "__CORE_SHARED_EVENT_HUB_NAMESPACE_NAME__"
+    },
+    "catalogResourceGroupName": {
+      "value": "__CORE_CATALOG_RESOURCE_GROUP_NAME__"
+    },
+    "catalogSubscriptionId": {
+      "value": "__CORE_CATALOG_SUBSCRIPTION_ID__"
+    },
+    "commonStorageAccountName": {
+      "value": "__INFRA_COMMON_STORAGE_ACCOUNT_NAME__"
+    },
+    "catalogConfigTableName": {
+      "value": "__INFRA_CATALOG_CONFIG_TABLE_NAME__"
     }
+  }
 }

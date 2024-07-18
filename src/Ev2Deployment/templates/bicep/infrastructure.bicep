@@ -144,6 +144,14 @@ module commonStorageAccountModule 'storageAccount.bicep' = {
   }
 }
 
+module commonStorageAccountRoleAssignmentsModule 'storageRoleAssignments.bicep' = {
+  name: 'commonStorageAccountRoleAssignmentsDeploy'
+  params: {
+    storageAccountName: commonStorageAccountModule.outputs.storageAccountName
+    principalId: containerAppIdentity.properties.principalId
+  }
+}
+
 module catalogConfigTableModule 'storageTable.bicep' = {
   name: 'catalogConfigTableDeploy'
   params: {

@@ -152,6 +152,10 @@
           "replaceWith": "$subscriptionId()"
         },
         {
+          "find": "__INFRA_COMMON_STORAGE_ACCOUNT_NAME__",
+          "replaceWith": "$config(dgprov.commonStorageAccountName)"
+        },
+        {
           "find": "__INFRA_CATALOG_CONFIG_TABLE_NAME__",
           "replaceWith": "$config(dgprov.catalogConfigTableName)"
         }
