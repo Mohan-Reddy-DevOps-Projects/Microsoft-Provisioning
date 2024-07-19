@@ -24,7 +24,7 @@ public class CatalogConfigService : ICatalogConfigService
         this.logger = logger;
     }
 
-    public async Task CreateCatalogConfigAsync(string accountId, string tenantId, CancellationToken cancellation)
+    public async Task<CatalogConfigModel> CreateCatalogConfigAsync(string accountId, string tenantId, CancellationToken cancellation)
     {
         this.logger.LogInformation($"Creating catalog config.");
         DateTime now = DateTime.UtcNow;
@@ -47,17 +47,15 @@ public class CatalogConfigService : ICatalogConfigService
             CreatedAt = now,
             ModifiedAt = now,
         };
-        try
+        var existModel = await this.catalogConfigRepository.GetSingle(accountId, cancellation).ConfigureAwait(false);
+        if (existModel == null)
         {
             var config = await this.catalogConfigRepository.Create(accountId, catalogConfigModel, cancellation).ConfigureAwait(false);
-            this.logger.LogInformation($"Created catalog config.");
-
-        } catch (RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.Conflict)
-        {
-            this.logger.LogInformation($"Catalog config already exists.");
+            this.logger.LogInformation($"Created catalog config for account: {accountId}");
+            return config;
         }
-
-        return;
+        this.logger.LogInformation($"Catalog config exists for account: {accountId}");
+        return existModel;
     }
 
     public async Task DeleteCatalogConfigAsync(string accountId, CancellationToken cancellationToken)
@@ -68,7 +66,7 @@ public class CatalogConfigService : ICatalogConfigService
             await this.catalogConfigRepository.Delete(accountId, cancellationToken).ConfigureAwait(false);
             this.logger.LogInformation($"Deleted catalog config.");
         }
-        catch (RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.NotFound)
+        catch (ServiceException ex) when (ex.Category == ErrorCategory.ResourceNotFound)
         {
             this.logger.LogWarning($"Catalog config already deleted.");
         }

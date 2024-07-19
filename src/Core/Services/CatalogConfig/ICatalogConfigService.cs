@@ -17,7 +17,7 @@ public interface ICatalogConfigService
     /// <summary>
     /// Create catalog config
     /// </summary>
-    Task CreateCatalogConfigAsync(string accountId, string tenantId, CancellationToken cancellationToken);
+    Task<CatalogConfigModel> CreateCatalogConfigAsync(string accountId, string tenantId, CancellationToken cancellationToken);
 
    /// <summary>
    /// Delete catalog config
