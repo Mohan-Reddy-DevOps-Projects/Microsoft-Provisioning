@@ -28,11 +28,8 @@ internal class CatalogConfigAdapter
     {
         return new CatalogConfigModel()
         {
-            Id = Guid.Parse(catalogConfigPayload.Id),
             Sku = catalogConfigPayload.Sku.ToModel(),
-            Features = CatalogFeaturesAdapter.ToModel(catalogConfigPayload.Features),
-            CreatedAt = catalogConfigPayload.CreatedAt,
-            ModifiedAt = catalogConfigPayload.ModifiedAt,
+            Features = CatalogFeaturesAdapter.ToModel(catalogConfigPayload.Features)
         };
     }
 }
