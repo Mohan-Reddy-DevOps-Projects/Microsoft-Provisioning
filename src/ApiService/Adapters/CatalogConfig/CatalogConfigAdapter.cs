@@ -5,6 +5,7 @@
 namespace Microsoft.Purview.DataGovernance.Provisioning.ApiService;
 
 using Microsoft.Purview.DataGovernance.Provisioning.ApiService.Adapters;
+using Microsoft.Purview.DataGovernance.Provisioning.ApiService.DataTransferObjects;
 using Microsoft.Purview.DataGovernance.Provisioning.Models;
 
 /// <summary>
@@ -17,7 +18,7 @@ internal class CatalogConfigAdapter
         return new CatalogConfig
         {
             Id = model.Id.ToString(),
-            Sku = model.Sku.ToDto(),
+            Sku = model.Sku.ToString(),
             Features = CatalogFeaturesAdapter.FromModel(model.Features),
             CreatedAt = model.CreatedAt,
             ModifiedAt = model.ModifiedAt,
@@ -26,13 +27,21 @@ internal class CatalogConfigAdapter
 
     public CatalogConfigModel ToModel(CatalogConfig catalogConfigPayload)
     {
-        return new CatalogConfigModel()
+        if (Enum.TryParse<CatalogSkuName>(catalogConfigPayload.Sku, true, out var sku))
         {
-            Id = Guid.Parse(catalogConfigPayload.Id),
-            Sku = catalogConfigPayload.Sku.ToModel(),
-            Features = CatalogFeaturesAdapter.ToModel(catalogConfigPayload.Features),
-            CreatedAt = catalogConfigPayload.CreatedAt,
-            ModifiedAt = catalogConfigPayload.ModifiedAt,
-        };
+            return new CatalogConfigModel()
+            {
+                Id = catalogConfigPayload.Id != null ? Guid.Parse(catalogConfigPayload.Id) : Guid.NewGuid(),
+                Sku = sku,
+                Features = CatalogFeaturesAdapter.ToModel(catalogConfigPayload.Features),
+                CreatedAt = catalogConfigPayload.CreatedAt ?? DateTime.UtcNow,
+                ModifiedAt = catalogConfigPayload.ModifiedAt ?? DateTime.UtcNow,
+            };
+        }
+        else
+        {
+            throw new ArgumentException("Invalid sku value: " + catalogConfigPayload.Sku);
+        }
+       
     }
 }

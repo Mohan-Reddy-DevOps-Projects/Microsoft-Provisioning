@@ -14,5 +14,5 @@ public class CatalogFeatureSettings
 	/// </summary>
 	[Required]
     [JsonProperty("mode")]
-    public CatalogSkuMode Mode { get; set; }
+    public string Mode { get; set; }
 }
