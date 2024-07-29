@@ -15,37 +15,34 @@ public class CatalogConfig
     /// Id of catalog config
     /// </summary>
     [ReadOnly(true)]
-    [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
-    #nullable enable
-    public string? Id { get; internal set; }
+    [JsonProperty("id")]
+    public string Id { get; internal set; }
 
     /// <summary>
     /// sku of catalog config.
     /// </summary>
     [JsonProperty("sku")]
     [Required]
-    #nullable disable
-    public string Sku { get; set; }
+    public CatalogSkuName Sku { get; set; }
 
     /// <summary>
     /// features of catalog config.
     /// </summary>
     [JsonProperty("features")]
     [Required]
-    #nullable disable
     public CatalogFeatures Features { get; set; }
 
     /// <summary>
     /// Created time of catalog config.
     /// </summary>
-    [JsonProperty("createdAt", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("createdAt")]
     [ReadOnly(true)]
-    public DateTime? CreatedAt { get; internal set; }
+    public DateTime CreatedAt { get; internal set; }
 
     /// <summary>
     /// Updated time of catalog config
     /// </summary>
-    [JsonProperty("modifiedAt", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("modifiedAt")]
     [ReadOnly(true)]
-    public DateTime? ModifiedAt { get; internal set; }
+    public DateTime ModifiedAt { get; internal set; }
 }

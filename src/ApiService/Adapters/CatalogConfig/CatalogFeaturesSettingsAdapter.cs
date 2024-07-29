@@ -17,22 +17,16 @@ internal static class CatalogFeaturesSettingsAdapter
     {
         return new CatalogFeatureSettings
         {
-            Mode = model.Mode.ToString(),
+            Mode = model.Mode.ToDto(),
         };
     }
 
     /// <inheritdoc />
     public static CatalogFeatureSettingsModel ToModel(CatalogFeatureSettings catalogFeatureSettings)
     {
-        if (Enum.TryParse<CatalogSkuMode>(catalogFeatureSettings.Mode, true, out var mode))
+        return new CatalogFeatureSettingsModel
         {
-            return new CatalogFeatureSettingsModel
-            {
-                Mode = mode
-            };
-        } else
-        {
-            throw new ArgumentException("Invalid mode value: " + catalogFeatureSettings.Mode);
-        }
+            Mode = catalogFeatureSettings.Mode.ToModel(),
+        };
     }
 }

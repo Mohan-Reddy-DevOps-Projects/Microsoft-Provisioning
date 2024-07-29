@@ -5,14 +5,18 @@
 namespace Microsoft.Purview.DataGovernance.Provisioning.ApiService.DataTransferObjects;
 
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json.Converters;
 
-public class CatalogFeatureSettings
+[JsonConverter(typeof(StringEnumConverter))]
+public enum CatalogSkuMode
 {
-	/// <summary>
-	/// mode of the catalog feature settings.
-	/// </summary>
-	[Required]
-    [JsonProperty("mode")]
-    public CatalogSkuMode Mode { get; set; }
+    /// <summary>
+    /// feature is on
+    /// </summary>
+    On,
+
+    /// <summary>
+    /// feature is off
+    /// </summary>
+    Off,
 }
