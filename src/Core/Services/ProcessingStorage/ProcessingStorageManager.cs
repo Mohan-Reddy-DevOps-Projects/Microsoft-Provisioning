@@ -27,6 +27,7 @@ using StorageSasRequest = Models.StorageSasRequest;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
+using Microsoft.Extensions.Caching.Memory;
 
 /// <summary>
 /// Processing storage manager.
@@ -35,6 +36,7 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
 {
     private readonly TokenCredential tokenCredential;
     private readonly IStorageAccountRepository<ProcessingStorageModel> storageAccountRepository;
+    private readonly IMemoryCache cache;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProcessingStorageManager"/> class.
@@ -49,9 +51,11 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         IStorageAccountRepository<ProcessingStorageModel> storageAccountRepository,
         IAzureResourceManagerFactory azureResourceManagerFactory,
         IOptions<ProcessingStorageConfiguration> processingStorageConfiguration,
+        IMemoryCache cache,
         IServiceRequestLogger logger) : base(azureResourceManagerFactory.Create<ProcessingStorageAuthConfiguration>(), processingStorageConfiguration, logger)
     {
         this.storageAccountRepository = storageAccountRepository;
+        this.cache = cache;
         this.tokenCredential = credentialFactory.CreateDefaultAzureCredential();
     }
 
@@ -225,6 +229,13 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         await this.CreateContainer(storageAccount, accountServiceModel.DefaultCatalogId, cancellationToken);
     }
 
+    private async Task<string> DetermineSkuName(SubscriptionResource subscription, string location, CancellationToken cancellationToken)
+    {
+        bool isZoneRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardZrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+
+        return isZoneRedundant ? StorageSkuName.StandardZrs.ToString() : StorageSkuName.StandardLrs.ToString();
+    }
+
     /// <summary>
     /// Will call the storage SKU API to determine if storage supports zone redundant storage for the subscription and location. The result is cached in memory.
     /// </summary>
@@ -232,25 +243,36 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
     /// <param name="location"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>Whether the location and subscription support zone redundant storage.</returns>
-    private async Task<bool> IsStorageZRSAvailable(
+    private async Task<bool> CheckStorageAvailability(
         SubscriptionResource subscription,
         string location,
+        StorageSkuName skuName,
+        StorageSkuTier skuTier,
+        string skuKind,
         CancellationToken cancellationToken)
     {
+        string cacheKey = $"{subscription.Id}-{location}-{skuName}-{skuTier}-{skuKind}";
+
+        if (this.cache.TryGetValue(cacheKey, out bool cachedResult))
+        {
+            return cachedResult;
+        }
+
+        TimeSpan absoluteExpirationRelativeToNow = TimeSpan.FromMinutes(71);
         AsyncPageable<StorageSkuInformation> skus = subscription.GetSkusAsync(cancellationToken);
 
         await foreach (StorageSkuInformation sku in skus)
         {
-            if (sku.Name == StorageSkuName.StandardZrs &&
-                sku.Tier == StorageSkuTier.Standard &&
-                sku.Kind == Azure.Management.Storage.Models.Kind.StorageV2 &&
-                sku.Locations.Any(l => l.Equals(location, StringComparison.OrdinalIgnoreCase)))
+            if (sku.Name == skuName &&
+                sku.Tier == skuTier &&
+                sku.Kind == skuKind &&
+                sku.Locations.Contains(location, StringComparer.OrdinalIgnoreCase))
             {
-                return true;
+                return this.cache.Set(cacheKey, true, absoluteExpirationRelativeToNow);
             }
         }
 
-        return false;
+        return this.cache.Set(cacheKey, false, absoluteExpirationRelativeToNow);
     }
 
     /// <summary>
@@ -298,9 +320,7 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         StorageAccountResource storageAccount;
         if (existingStorageModel == null)
         {
-            bool isZoneRedundant = await this.IsStorageZRSAvailable(subscription, storageAccountRequest.Location, cancellationToken);
-            string skuName = isZoneRedundant ? StorageSkuName.StandardZrs.ToString() : StorageSkuName.StandardLrs.ToString();
-            storageAccountRequest.Sku = skuName;
+            storageAccountRequest.Sku = await this.DetermineSkuName(subscription, storageAccountRequest.Location, cancellationToken);
             storageAccount = await this.CreateStorageAccount(subscription, resourceGroup, storageAccountRequest, cancellationToken);
         }
         else

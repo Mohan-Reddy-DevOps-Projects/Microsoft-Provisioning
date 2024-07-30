@@ -34,11 +34,17 @@ internal abstract class StorageManager<TConfig>
         this.azureResourceManager = azureResourceManager;
     }
 
-    protected async Task DeleteStorageAccount(ResourceGroupResource resourceGroup, string accountName, CancellationToken cancellationToken)
+    protected async Task<StorageAccountResource> GetStorageAccount(ResourceGroupResource resourceGroup, string accountName, CancellationToken cancellationToken)
     {
         Response<StorageAccountResource> response = await resourceGroup.GetStorageAccountAsync(accountName, StorageAccountExpand.BlobRestoreStatus, cancellationToken);
         StorageAccountResource storageAccount = response.Value;
 
+        return storageAccount;
+    }
+
+    protected async Task DeleteStorageAccount(ResourceGroupResource resourceGroup, string accountName, CancellationToken cancellationToken)
+    {
+        StorageAccountResource storageAccount = await this.GetStorageAccount(resourceGroup, accountName, cancellationToken);
         await storageAccount.DeleteAsync(WaitUntil.Completed, cancellationToken);
     }
 
