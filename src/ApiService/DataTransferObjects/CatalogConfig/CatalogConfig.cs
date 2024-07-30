@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Purview.DataGovernance.Provisioning.ApiService.DataTransferObjects;
+using Microsoft.Purview.DataGovernance.Provisioning.ApiService.Attributes;
 
 public class CatalogConfig
 {
@@ -22,7 +23,7 @@ public class CatalogConfig
     /// sku of catalog config.
     /// </summary>
     [JsonProperty("sku")]
-    [Required]
+    [RequiredEnum]
     public CatalogSkuName Sku { get; set; }
 
     /// <summary>

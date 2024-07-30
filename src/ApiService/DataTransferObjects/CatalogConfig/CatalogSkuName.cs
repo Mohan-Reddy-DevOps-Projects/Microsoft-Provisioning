@@ -13,15 +13,15 @@ public enum CatalogSkuName
     /// <summary>
     /// catalog config sku is Basic
     /// </summary>
-    Basic = 0,
+    Basic = 1,
 
     /// <summary>
     /// catalog config sku is Standard
     /// </summary>
-    Standard,
+    Standard = 2,
 
     /// <summary>
     /// catalog config sku is Advanced
     /// </summary>
-    Advanced,
+    Advanced = 3,
 }
