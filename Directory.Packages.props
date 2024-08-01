@@ -27,7 +27,7 @@
     <PackageVersion Include="Microsoft.Azure.Management.Storage" Version="25.0.0" />
     <PackageVersion Include="Microsoft.Azure.ProjectBabylon.LoggerBase" Version="2.26.0" />
     <PackageVersion Include="Microsoft.Azure.ProjectBabylon.Metadata.ProjectBabylonMetadataClient" Version="1.0.149" />
-    <PackageVersion Include="Microsoft.Azure.Purview.ExposureControlLibrary" Version="1.0.441" />
+    <PackageVersion Include="Microsoft.Azure.Purview.ExposureControlLibrary" Version="1.0.451" />
     <PackageVersion Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.2" />
     <PackageVersion Include="Microsoft.Purview.DataGovernance.Common" Version="1.0.14" />
     <PackageVersion Include="Microsoft.Purview.DataGovernance.Loggers" Version="1.0.5" />

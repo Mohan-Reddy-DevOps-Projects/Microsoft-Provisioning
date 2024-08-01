@@ -37,6 +37,8 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
     private readonly TokenCredential tokenCredential;
     private readonly IStorageAccountRepository<ProcessingStorageModel> storageAccountRepository;
     private readonly IMemoryCache cache;
+    private readonly IRequestContextAccessor requestContextAccessor;
+    private readonly IAccountExposureControlConfigProvider exposureControl;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProcessingStorageManager"/> class.
@@ -52,10 +54,14 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         IAzureResourceManagerFactory azureResourceManagerFactory,
         IOptions<ProcessingStorageConfiguration> processingStorageConfiguration,
         IMemoryCache cache,
+        IRequestContextAccessor requestContextAccessor,
+        IAccountExposureControlConfigProvider exposureControl,
         IServiceRequestLogger logger) : base(azureResourceManagerFactory.Create<ProcessingStorageAuthConfiguration>(), processingStorageConfiguration, logger)
     {
         this.storageAccountRepository = storageAccountRepository;
         this.cache = cache;
+        this.requestContextAccessor = requestContextAccessor;
+        this.exposureControl = exposureControl;
         this.tokenCredential = credentialFactory.CreateDefaultAzureCredential();
     }
 
@@ -229,11 +235,40 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         await this.CreateContainer(storageAccount, accountServiceModel.DefaultCatalogId, cancellationToken);
     }
 
-    private async Task<string> DetermineSkuName(SubscriptionResource subscription, string location, CancellationToken cancellationToken)
+    private async Task<string> DetermineUpgradedSkuName(SubscriptionResource subscription, string location, string currentSku, CancellationToken cancellationToken)
     {
-        bool isZoneRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardZrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+        IRequestHeaderContext requestContext = this.requestContextAccessor.GetRequestContext();
+        if (this.exposureControl.IsGeoReplicationEnabled(requestContext) && currentSku.Equals(StorageSkuName.StandardLrs.ToString(), StringComparison.OrdinalIgnoreCase))
+        {
+            bool isgeoRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardRagrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+            if (isgeoRedundant)
+            {
+                return StorageSkuName.StandardRagrs.ToString();
+            }
+        }
 
-        return isZoneRedundant ? StorageSkuName.StandardZrs.ToString() : StorageSkuName.StandardLrs.ToString();
+        return currentSku;
+    }
+
+    private async Task<string> DetermineDefaultSkuName(SubscriptionResource subscription, string location, CancellationToken cancellationToken)
+    {
+        IRequestHeaderContext requestContext = this.requestContextAccessor.GetRequestContext();
+        if (this.exposureControl.IsGeoReplicationEnabled(requestContext))
+        {
+            bool isgeoRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardRagrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+            if (isgeoRedundant)
+            {
+                return StorageSkuName.StandardRagrs.ToString();
+            }
+        }
+        
+        bool isZoneRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardZrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+        if (isZoneRedundant)
+        {
+            return StorageSkuName.StandardZrs.ToString();
+        }
+
+        return StorageSkuName.StandardLrs.ToString();
     }
 
     /// <summary>
@@ -320,14 +355,14 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         StorageAccountResource storageAccount;
         if (existingStorageModel == null)
         {
-            storageAccountRequest.Sku = await this.DetermineSkuName(subscription, storageAccountRequest.Location, cancellationToken);
+            storageAccountRequest.Sku = await this.DetermineDefaultSkuName(subscription, storageAccountRequest.Location, cancellationToken);
             storageAccount = await this.CreateStorageAccount(subscription, resourceGroup, storageAccountRequest, cancellationToken);
         }
         else
         {
+            storageAccountRequest.Sku = await this.DetermineUpgradedSkuName(subscription, storageAccountRequest.Location, existingStorageModel.Properties.Sku, cancellationToken);
             ResourceIdentifier storageId = new(existingStorageModel.Properties.ResourceId);
             storageAccountRequest.Name = storageId.Name;
-            storageAccountRequest.Sku = existingStorageModel.Properties.Sku;
             storageAccount = await this.UpdateStorageAccount(resourceGroup, storageAccountRequest, cancellationToken);
         }
 

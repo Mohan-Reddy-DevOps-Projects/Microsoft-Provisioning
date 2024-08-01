@@ -3,6 +3,9 @@
 // -----------------------------------------------------------
 
 namespace Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
+
+using Microsoft.Purview.DataGovernance.Common;
+
 /// <summary>
 /// Expose Exposure Control APIs
 /// </summary>
@@ -25,4 +28,11 @@ public interface IAccountExposureControlConfigProvider
     /// <param name="tenantId">The tenant id</param>
     /// <returns></returns>
     public bool IsDataGovAdminExperienceEnabled(string accountId, string subscriptionId, string tenantId);
+
+    /// <summary>
+    /// Determines if geo replication for Data Governance is enabled. By default this is false.
+    /// </summary>
+    /// <param name="requestContext">The request context</param>
+    /// <returns></returns>
+    public bool IsGeoReplicationEnabled(IRequestHeaderContext requestContext);
 }

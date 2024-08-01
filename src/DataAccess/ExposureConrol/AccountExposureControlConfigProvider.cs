@@ -10,6 +10,7 @@ using System.Text.Json;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Azure.Purview.ExposureControlLibrary;
 using Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
+using Microsoft.Purview.DataGovernance.Common;
 
 internal sealed class AccountExposureControlConfigProvider : IAccountExposureControlConfigProvider
 {
@@ -126,6 +127,18 @@ internal sealed class AccountExposureControlConfigProvider : IAccountExposureCon
             AccountId = accountId,
             SubscriptionId = subscriptionId,
             TenantId = tenantId
+        };
+
+        return this.IsFeatureEnabled(options);
+    }
+
+    public bool IsGeoReplicationEnabled(IRequestHeaderContext requestContext)
+    {
+        ExposureControlOptions options = new(Features.DataGovProvisioningGeoReplication.ToString(), false)
+        {
+            AccountId = requestContext.AccountObjectId.ToString(),
+            SubscriptionId = string.Empty,
+            TenantId = requestContext.TenantId.ToString()
         };
 
         return this.IsFeatureEnabled(options);
