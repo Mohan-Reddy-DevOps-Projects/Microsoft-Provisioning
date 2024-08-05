@@ -238,12 +238,24 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
     private async Task<string> DetermineUpgradedSkuName(SubscriptionResource subscription, string location, string currentSku, CancellationToken cancellationToken)
     {
         IRequestHeaderContext requestContext = this.requestContextAccessor.GetRequestContext();
-        if (this.exposureControl.IsGeoReplicationEnabled(requestContext) && currentSku.Equals(StorageSkuName.StandardLrs.ToString(), StringComparison.OrdinalIgnoreCase))
+        if (this.exposureControl.IsGeoReplicationEnabled(requestContext))
         {
-            bool isgeoRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardRagrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
-            if (isgeoRedundant)
+            if (currentSku.Equals(StorageSkuName.StandardZrs.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                return StorageSkuName.StandardRagrs.ToString();
+                bool isgeoRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardRagzrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+                if (isgeoRedundant)
+                {
+                    return StorageSkuName.StandardRagzrs.ToString();
+                }
+            }
+            
+            if (currentSku.Equals(StorageSkuName.StandardLrs.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                bool isgeoRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardRagrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+                if (isgeoRedundant)
+                {
+                    return StorageSkuName.StandardRagrs.ToString();
+                }
             }
         }
 
@@ -255,7 +267,13 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         IRequestHeaderContext requestContext = this.requestContextAccessor.GetRequestContext();
         if (this.exposureControl.IsGeoReplicationEnabled(requestContext))
         {
-            bool isgeoRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardRagrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+            bool isgeoRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardRagzrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
+            if (isgeoRedundant)
+            {
+                return StorageSkuName.StandardRagrs.ToString();
+            }
+            
+            isgeoRedundant = await this.CheckStorageAvailability(subscription, location, StorageSkuName.StandardRagrs, StorageSkuTier.Standard, Azure.Management.Storage.Models.Kind.StorageV2, cancellationToken);
             if (isgeoRedundant)
             {
                 return StorageSkuName.StandardRagrs.ToString();
