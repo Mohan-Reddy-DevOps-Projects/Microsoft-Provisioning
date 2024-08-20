@@ -22,7 +22,6 @@ public static class CoreLayer
     {
         services.AddSingleton<ICertificateLoaderService, CertificateLoaderService>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddSingleton<IStorageCredentialsProvider, StorageCredentialsProvider>();
         services.AddSingleton<IKeyVaultAccessorService, KeyVaultAccessorService>();
         services.AddSingleton<ServiceHealthCheck>();
         services.AddSingleton<IProcessingStorageManager, ProcessingStorageManager>();

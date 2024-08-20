@@ -9,7 +9,6 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.ResourceStack.Common.Extensions;
 using Newtonsoft.Json;
 using Microsoft.Purview.DataGovernance.Common.Configuration;
 using Microsoft.Purview.DataGovernance.Common;
@@ -43,13 +42,13 @@ public class ApiVersionGuardMiddleware
     public async Task InvokeAsync(HttpContext httpContext, IRequestHeaderContext requestHeaderContext)
     {
         // Skip API version validation for control plane requests.
-        if (httpContext.Request.Path.HasValue && httpContext.Request.Path.Value.StartsWithInsensitively(controlPlaneRoutePrefix))
+        if (httpContext.Request.Path.HasValue && httpContext.Request.Path.Value.StartsWith(controlPlaneRoutePrefix, StringComparison.OrdinalIgnoreCase))
         {
             await this.next(httpContext);
             return;
         }
 
-        if (!this.environmentConfiguration.PermittedApiVersions.ContainsInsensitively(requestHeaderContext.ApiVersion))
+        if (!this.environmentConfiguration.PermittedApiVersions.Any(version => string.Equals(version, requestHeaderContext.ApiVersion, StringComparison.OrdinalIgnoreCase)))
         {
             var responseBody = new ErrorResponseModel
             {

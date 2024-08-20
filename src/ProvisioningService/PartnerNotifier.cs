@@ -8,12 +8,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Azure.ProjectBabylon.Metadata.Models;
 using Microsoft.Purview.DataGovernance.Loggers;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.ProvisioningService.Configurations;
-using Microsoft.WindowsAzure.ResourceStack.Common.Json;
 
 /// <summary>
 /// Notify partner services
@@ -87,7 +86,7 @@ public static class PartnerNotifier
 
         if (partnerContext != null)
         {
-            logger.LogInformation($"Partner Context value is: {partnerContext.ToJson()}");
+            logger.LogInformation($"Partner Context value is: {JsonSerializer.Serialize(partnerContext)}");
         }
 
         foreach (IPartnerDetails partner in partners)

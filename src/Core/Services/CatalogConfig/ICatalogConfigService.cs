@@ -5,11 +5,6 @@
 namespace Microsoft.Purview.DataGovernance.Provisioning.Core;
 
 using Microsoft.Purview.DataGovernance.Provisioning.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Text;
 using System.Threading.Tasks;
 
 public interface ICatalogConfigService

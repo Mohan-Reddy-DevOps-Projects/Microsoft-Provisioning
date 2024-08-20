@@ -8,10 +8,10 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.ResourceStack.Common.Json;
 using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
+using System.Text.Json;
 
 internal class ApiClient : IApiClient
 {
@@ -84,7 +84,7 @@ internal class ApiClient : IApiClient
         Func<Task<HttpResponseMessage>> operation)
     {
         this.logger.LogInformation(
-            $"httpRequestMessage for endPointType - {endPointType}, {operationName} in ApiClient requestUri :{httpRequestMessage.RequestUri.ToJson()}, method : {httpRequestMessage.Method.ToJson()}",
+            $"httpRequestMessage for endPointType - {endPointType}, {operationName} in ApiClient requestUri :{JsonSerializer.Serialize(httpRequestMessage.RequestUri)}, method : {JsonSerializer.Serialize(httpRequestMessage.Method)}",
             isSensitive: true);
 
         return await PollyRetryPolicies

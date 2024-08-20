@@ -12,9 +12,6 @@ using System.Threading;
 using global::Azure;
 using global::Azure.Identity;
 using global::Azure.Security.KeyVault.Secrets;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
-
-using Microsoft.WindowsAzure.ResourceStack.Common.Json;
 using Microsoft.Purview.DataGovernance.Provisioning.Common.Extensions;
 using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using Microsoft.Extensions.Options;
@@ -22,6 +19,7 @@ using ErrorCode = Common.ErrorCode;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
+using System.Text.Json;
 
 /// <summary>
 /// Access an Azure key vault using a managed identity
@@ -79,7 +77,7 @@ public class KeyVaultAccessorService : IKeyVaultAccessorService, IDisposable
             throw new ServiceError(
                     ErrorCategory.ServiceError,
                     ErrorCode.KeyVault_GetSecretError,
-                    keyVaultException.ToJson())
+                    JsonSerializer.Serialize(keyVaultException))
                 .ToException();
         }
         catch (Exception exception)

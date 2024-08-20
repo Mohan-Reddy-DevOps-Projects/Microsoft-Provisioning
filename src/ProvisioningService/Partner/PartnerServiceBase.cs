@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
-using Microsoft.WindowsAzure.ResourceStack.Common.Instrumentation;
 using ErrorModel = Common.ErrorModel;
 
 /// <summary>
@@ -421,7 +420,7 @@ internal abstract class PartnerServiceBase
     {
         // Add correlation ID
         httpRequest.Headers.TryAddWithoutValidation(
-            RequestCorrelationContext.HeaderCorrelationRequestId,
+            CallContext.HeaderCorrelationRequestId,
             this.RequestHeaderContext?.CorrelationId ?? Guid.NewGuid().ToString());
     }
 
