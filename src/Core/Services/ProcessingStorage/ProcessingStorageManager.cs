@@ -28,6 +28,7 @@ using Microsoft.Purview.DataGovernance.Common;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
 using Microsoft.Extensions.Caching.Memory;
+using System.Text.Json;
 
 /// <summary>
 /// Processing storage manager.
@@ -316,9 +317,11 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
 
         await foreach (StorageSkuInformation sku in skus)
         {
+            this.logger.LogInformation($"ProcessingStorage SKU Information: {JsonSerializer.Serialize(sku)}");
             if (sku.Name == skuName &&
                 sku.Tier == skuTier &&
                 sku.Kind == skuKind &&
+                !sku.Restrictions.Any() &&
                 sku.Locations.Contains(location, StringComparer.OrdinalIgnoreCase))
             {
                 return this.cache.Set(cacheKey, true, absoluteExpirationRelativeToNow);
@@ -374,6 +377,8 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         if (existingStorageModel == null)
         {
             storageAccountRequest.Sku = await this.DetermineDefaultSkuName(subscription, storageAccountRequest.Location, cancellationToken);
+            this.logger.LogInformation($"Storage Resource Request: {JsonSerializer.Serialize(storageAccountRequest)}");
+
             storageAccount = await this.CreateStorageAccount(subscription, resourceGroup, storageAccountRequest, cancellationToken);
         }
         else
@@ -381,6 +386,8 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
             storageAccountRequest.Sku = await this.DetermineUpgradedSkuName(subscription, storageAccountRequest.Location, existingStorageModel.Properties.Sku, cancellationToken);
             ResourceIdentifier storageId = new(existingStorageModel.Properties.ResourceId);
             storageAccountRequest.Name = storageId.Name;
+            this.logger.LogInformation($"Storage Resource Request: {JsonSerializer.Serialize(storageAccountRequest)}");
+
             storageAccount = await this.UpdateStorageAccount(resourceGroup, storageAccountRequest, cancellationToken);
         }
 
