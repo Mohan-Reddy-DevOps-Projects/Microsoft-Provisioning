@@ -24,6 +24,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Common.Configuration;
+using Microsoft.Azure.Management.Storage.Models;
+using Microsoft.Purview.DataGovernance.Provisioning.ApiService.Extensions;
 
 /// <summary>
 /// The Provisioning API service.
@@ -75,7 +77,7 @@ public class Program
             .AddAuthentication();
 
         builder.Services
-            .AddControllers()
+            .AddControllers(config => config.Filters.Add<RequestAuditFilter>())
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
