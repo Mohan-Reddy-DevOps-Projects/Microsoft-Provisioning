@@ -79,8 +79,8 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         CancellationToken cancellationToken)
     {
         this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku?.Name}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
-
-        if (account.ProvisioningState != ProvisioningState.Creating || account.IsFreeTier() || !account.IsReconciled())
+        bool isInvalidReconcileState = IsInvalidReconcileState(account);
+        if (account.ProvisioningState != ProvisioningState.Creating || account.IsFreeTier() || isInvalidReconcileState)
         {
             return this.Ok();
         }
@@ -90,27 +90,14 @@ public class PlatformAccountNotificationsController : ControlPlaneController
             return this.Ok();
         }
 
-        string responseStatus = await this.processingStorageManager.Provision(account, cancellationToken);
-
-        if (this.exposureControl.IsDataGovAdminExperienceEnabled(account.Id, account.SubscriptionId, account.TenantId))
+        if (account.IsInactiveReconcile())
         {
-            await this.catalogConfigService.CreateCatalogConfigAsync(account.Id, account.TenantId, cancellationToken);
+            DeletionResult deletionResult = await this.Delete(account, cancellationToken);
+            this.logger.LogInformation($"Unreconcile Notification: ResponseCode: {deletionResult.DeletionStatus}");
+            return this.Ok();
         }
 
-        Task partnerTask = PartnerNotifier.NotifyPartners(
-                this.logger,
-                this.partnerService,
-                this.partnerConfig,
-                account,
-                ProvisioningService.OperationType.CreateOrUpdate,
-                InitPartnerContext(this.partnerConfig.Partners));
-
-        List<Task> tasks = new()
-        {
-            partnerTask
-        };
-
-        await Task.WhenAll(tasks);
+        string responseStatus = await this.Create(account, cancellationToken);
 
         this.logger.LogInformation($"CreateOrUpdateNotificationAsync: ResponseCode: {responseStatus}");
 
@@ -137,7 +124,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         CancellationToken cancellationToken)
     {
         this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: ProvisioningState: {account.ProvisioningState}; Sku: {account.Sku?.Name}; Reconciled: {account.ReconciliationConfig?.ReconciliationStatus}");
-        bool isInvalidReconcileState = !(account.IsReconciled() || account.IsInactiveReconcile());
+        bool isInvalidReconcileState = IsInvalidReconcileState(account);
         if (operation == OperationType.SoftDelete || account.IsFreeTier() || isInvalidReconcileState)
         {
             return this.Ok();
@@ -148,6 +135,39 @@ public class PlatformAccountNotificationsController : ControlPlaneController
             return this.Ok();
         }
 
+        DeletionResult deletionResult = await this.Delete(account, cancellationToken);
+        this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: StatusCode: {deletionResult.DeletionStatus}");
+        return deletionResult.DeletionStatus switch
+        {
+            DeletionStatus.ResourceNotFound => this.NoContent(),
+            DeletionStatus.Deleted => this.Ok(),
+            _ => this.Ok(),
+        };
+    }
+
+    private async Task<string> Create(AccountServiceModel account, CancellationToken cancellationToken)
+    {
+        string responseStatus = await this.processingStorageManager.Provision(account, cancellationToken);
+        await this.catalogConfigService.CreateCatalogConfigAsync(account.Id, account.TenantId, cancellationToken);
+        Task partnerTask = PartnerNotifier.NotifyPartners(
+                this.logger,
+                this.partnerService,
+                this.partnerConfig,
+                account,
+                ProvisioningService.OperationType.CreateOrUpdate,
+                InitPartnerContext(this.partnerConfig.Partners));
+        List<Task> tasks = new()
+        {
+            partnerTask
+        };
+        await Task.WhenAll(tasks);
+        return responseStatus;
+    }
+
+    private static bool IsInvalidReconcileState(AccountServiceModel account) => !(account.IsReconciled() || account.IsInactiveReconcile());
+
+    private async Task<DeletionResult> Delete(AccountServiceModel account, CancellationToken cancellationToken)
+    {
         DataChangeEventPayload<AccountServiceModel> payload = new()
         {
             After = account
@@ -156,12 +176,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
         await this.eventPublisher.PublishChangeEvent(deleteEvent);
 
         DeletionResult deletionResult = await this.processingStorageManager.Delete(account, cancellationToken);
-
-        if (this.exposureControl.IsDataGovAdminExperienceEnabled(account.Id, account.SubscriptionId, account.TenantId))
-        {
-            await this.catalogConfigService.DeleteCatalogConfigAsync(account.Id, cancellationToken);
-        }
-            
+        await this.catalogConfigService.DeleteCatalogConfigAsync(account.Id, cancellationToken);
         await PartnerNotifier.NotifyPartners(
                 this.logger,
                 this.partnerService,
@@ -170,14 +185,7 @@ public class PlatformAccountNotificationsController : ControlPlaneController
                 ProvisioningService.OperationType.Delete,
                 InitPartnerContext(this.partnerConfig.Partners)).ConfigureAwait(false);
 
-        this.logger.LogInformation($"DeleteOrSoftDeleteNotificationAsync: StatusCode: {deletionResult.DeletionStatus}");
-
-        return deletionResult.DeletionStatus switch
-        {
-            DeletionStatus.ResourceNotFound => this.NoContent(),
-            DeletionStatus.Deleted => this.Ok(),
-            _ => this.Ok(),
-        };
+        return deletionResult;
     }
 
     private DataChangeEvent<T> AccountDeleteEvent<T>(AccountServiceModel account, DataChangeEventPayload<T> payload) where T : class

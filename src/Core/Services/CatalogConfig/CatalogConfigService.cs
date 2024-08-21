@@ -103,7 +103,7 @@ public class CatalogConfigService : ICatalogConfigService
             TenantId = currentModel.TenantId,
             CreatedAt = currentModel.CreatedAt,
             Sku = model.Sku,
-            Features = model.Features,
+            Features = currentModel.Features,
             ModifiedAt = DateTime.UtcNow,
         };
         return await this.catalogConfigRepository.Update(accountId, updatedModel, cancellationToken).ConfigureAwait(false);
