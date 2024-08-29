@@ -13,7 +13,8 @@
         "acrName": "$(pdg.groupName)dgprovacr$(pdg.environment.shortName)$(regionShortName)",
         "apiServiceReadinessProbePort": 8081,
         "commonStorageAccountName": "$(pdg.environment.shortName)$(regionShortName)provcommon",
-        "catalogConfigTableName": "CatalogConfig"
+        "catalogConfigTableName": "CatalogConfig",
+        "validatePartnerDEH": "true"
       }
     },
     "geographies": [
@@ -26,7 +27,8 @@
                         "dgprov": {
                             "synapseRegion": "eastus2euap",
                             "subdomainName": "prod-eastus2euap-prov",
-                            "resourceGroupName": "dgprov-canary-centraluseuap-rg"
+                            "resourceGroupName": "dgprov-canary-centraluseuap-rg",
+                            "validatePartnerDEH": "false"
                         }
                     }
                 }
