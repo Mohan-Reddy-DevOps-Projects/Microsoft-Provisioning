@@ -10,7 +10,8 @@
         "subdomainName": "df-westus2-prov",
         "useEstsr": "false",
         "commonStorageAccountName": "$(pdg.environment.shortName)$(regionShortName)provcommon",
-        "catalogConfigTableName": "CatalogConfig"
+        "catalogConfigTableName": "CatalogConfig",
+        "validatePartnerDEH": "true"
       }
     }
 }
