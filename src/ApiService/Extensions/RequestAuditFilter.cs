@@ -91,11 +91,12 @@ public class RequestAuditFilter : IActionFilter
             audit.AddOperationCategory(OperationCategory.ResourceManagement);
             audit.AddCallerAccessLevel(audit.OperationAccessLevel);
             audit.AddCallerIdentity(CallerIdentityType.Other, caller, "audit");
+            audit.AddTargetResource("ProvisioningService", "ProvisioningService");
             this.logger.LogAudit(audit);
         }
         catch (Exception ex)
         {
-            this.logger.LogError(ex, "AuditFailure: " + ex.Message);
+            this.logger.LogWarning(ex, "AuditFailure: " + ex.Message);
         }
 #pragma warning restore CA1031 // Do not catch general exception types
     }
