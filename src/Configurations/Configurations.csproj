@@ -9,8 +9,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Management.ResourceManager.Fluent" />
     <PackageReference Include="Microsoft.Purview.DataGovernance.Common" />
-    <PackageReference Include="System.Data.SqlClient" />
-    <PackageReference Include="System.Drawing.Common" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

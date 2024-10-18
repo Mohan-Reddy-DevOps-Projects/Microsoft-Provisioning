@@ -39,5 +39,4 @@
   <ItemGroup>
     <Bicep Include="templates/bicep/*.bicep" OutputFile="$(ServiceGroupRootDropPath)/templates/%(FileName).json" />
   </ItemGroup>
-	
 </Project>

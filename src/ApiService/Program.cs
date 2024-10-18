@@ -5,14 +5,12 @@
 namespace Microsoft.Purview.DataGovernance.Provisioning.ApiService;
 
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.NewtonsoftJson;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using Microsoft.Purview.DataGovernance.Provisioning.Core;
 using Microsoft.Purview.DataGovernance.Provisioning.DataAccess;
-using Microsoft.Purview.DataGovernance.Provisioning.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.ProvisioningService;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -24,7 +22,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Common.Configuration;
-using Microsoft.Azure.Management.Storage.Models;
 using Microsoft.Purview.DataGovernance.Provisioning.ApiService.Extensions;
 
 /// <summary>
@@ -56,11 +53,12 @@ public class Program
         var serviceConfiguration = builder.Configuration.GetSection("service").Get<ServiceConfiguration>();
         var environmentConfiguration = builder.Configuration.GetSection("environment").Get<EnvironmentConfiguration>();
 
-        builder.Logging.AddOltpExporter(builder.Environment.IsDevelopment(), environmentConfiguration);
+        builder.Logging.AddOltpExporter(builder.Environment.IsDevelopment(), environmentConfiguration, genevaConfiguration);
 
         // Add services to the container.
         builder.Services.AddApiVersioning();
         LoggerExtensions.EventName = "ProvisionLogEvent";
+        LoggerExtensions.LogTableName = "DgProvisionLog";
         builder.Services
             .AddLogger(genevaConfiguration, serviceConfiguration, environmentConfiguration, builder.Environment.IsDevelopment())
             .AddApiServiceConfigurations(builder.Configuration)
