@@ -120,18 +120,6 @@ internal sealed class AccountExposureControlConfigProvider : IAccountExposureCon
         return this.IsFeatureEnabled(options);
     }
 
-    public bool IsDataGovAdminExperienceEnabled(string accountId, string subscriptionId, string tenantId)
-    {
-        ExposureControlOptions options = new(Features.DataGovAdminExperience.ToString(), false)
-        {
-            AccountId = accountId,
-            SubscriptionId = subscriptionId,
-            TenantId = tenantId
-        };
-
-        return this.IsFeatureEnabled(options);
-    }
-
     public bool IsGeoReplicationEnabled(IRequestHeaderContext requestContext)
     {
         ExposureControlOptions options = new(Features.DataGovProvisioningGeoReplication.ToString(), false)

@@ -42,13 +42,6 @@ public class CatalogConfigControlller : DataPlaneController
         CancellationToken cancellationToken)
     {
         var accountId = this.requestHeaderContext.AccountObjectId.ToString();
-        var tenantId = this.requestHeaderContext.TenantId.ToString();
-
-        if (!this.exposureControl.IsDataGovAdminExperienceEnabled(accountId, string.Empty, tenantId))
-        {
-            this.logger.LogInformation($"DataGovAdminExperience ec not enabled for account: {accountId}");
-            return this.Unauthorized();
-        }
 
         var catalogConfigModel = await this.catalogService.GetCatalogConfigAsync(accountId, cancellationToken);
                 
@@ -65,13 +58,6 @@ public class CatalogConfigControlller : DataPlaneController
         CancellationToken cancellationToken)
     {
         var accountId = this.requestHeaderContext.AccountObjectId.ToString();
-        var tenantId = this.requestHeaderContext.TenantId.ToString();
-
-        if (!this.exposureControl.IsDataGovAdminExperienceEnabled(accountId, string.Empty, tenantId))
-        {
-            this.logger.LogInformation($"DataGovAdminExperience ec not enabled for account: {accountId}");
-            return this.Unauthorized();
-        }
 
         var updatedcatalogConfig = await this.catalogService.SetCatalogConfigAsync(this.requestHeaderContext.AccountObjectId.ToString(), this.catalogConfigAdapter.ToModel(catalogConfigPayload), cancellationToken);
 
