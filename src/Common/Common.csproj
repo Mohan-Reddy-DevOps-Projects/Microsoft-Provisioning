@@ -10,7 +10,6 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Management.ResourceManager.Fluent" />
     <PackageReference Include="Microsoft.Purview.DataGovernance.EventHub" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Polly.Contrib.WaitAndRetry" />

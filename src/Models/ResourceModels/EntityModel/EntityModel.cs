@@ -6,7 +6,6 @@ namespace Microsoft.Purview.DataGovernance.Provisioning.Models;
 
 using System;
 using global::Azure;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
 
 /// <summary>
 /// Entity model.
