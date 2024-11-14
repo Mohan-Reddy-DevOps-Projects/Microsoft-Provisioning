@@ -45,7 +45,14 @@ internal abstract class StorageManager<TConfig>
     protected async Task DeleteStorageAccount(ResourceGroupResource resourceGroup, string accountName, CancellationToken cancellationToken)
     {
         StorageAccountResource storageAccount = await this.GetStorageAccount(resourceGroup, accountName, cancellationToken);
-        await storageAccount.DeleteAsync(WaitUntil.Completed, cancellationToken);
+        try
+        {
+            await storageAccount.DeleteAsync(WaitUntil.Completed, cancellationToken);
+        }
+        catch (RequestFailedException ex) when (ex.Status == 404 && ex.ErrorCode == "StorageAccountNotFound")
+        {
+            this.logger.LogWarning("Processing storage account is already deleted", ex);
+        }
     }
 
     protected async Task<StorageAccountResource> UpdateStorageAccount(ResourceGroupResource resourceGroup, StorageAccountRequestModel storageModel, CancellationToken cancellationToken)
