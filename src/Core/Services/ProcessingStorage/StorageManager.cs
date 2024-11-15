@@ -44,9 +44,9 @@ internal abstract class StorageManager<TConfig>
 
     protected async Task DeleteStorageAccount(ResourceGroupResource resourceGroup, string accountName, CancellationToken cancellationToken)
     {
-        StorageAccountResource storageAccount = await this.GetStorageAccount(resourceGroup, accountName, cancellationToken);
         try
         {
+            StorageAccountResource storageAccount = await this.GetStorageAccount(resourceGroup, accountName, cancellationToken);
             await storageAccount.DeleteAsync(WaitUntil.Completed, cancellationToken);
         }
         catch (RequestFailedException ex) when (ex.Status == 404)
