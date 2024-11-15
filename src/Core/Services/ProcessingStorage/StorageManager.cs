@@ -49,7 +49,7 @@ internal abstract class StorageManager<TConfig>
         {
             await storageAccount.DeleteAsync(WaitUntil.Completed, cancellationToken);
         }
-        catch (RequestFailedException ex) when (ex.Status == 404 && ex.ErrorCode == "StorageAccountNotFound")
+        catch (RequestFailedException ex) when (ex.Status == 404)
         {
             this.logger.LogWarning("Processing storage account is already deleted", ex);
         }
