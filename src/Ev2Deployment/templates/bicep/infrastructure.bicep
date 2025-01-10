@@ -24,14 +24,16 @@ resource containerAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@
   location: location
 }
 
-resource acr 'Microsoft.ContainerRegistry/registries@2022-12-01' = {
+resource acr 'Microsoft.ContainerRegistry/registries@2023-01-01' = {
   name: toLower(acrName)
   location: location
   sku: {
     name: 'Premium'
   }
   properties: {
-    adminUserEnabled: true
+    adminUserEnabled: false
+    anonymousPullEnabled: false
+    localAuthDisabled: true
     policies: {
       quarantinePolicy: {
         status: 'disabled'
