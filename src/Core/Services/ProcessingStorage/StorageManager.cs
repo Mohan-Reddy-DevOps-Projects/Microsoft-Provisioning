@@ -16,6 +16,7 @@ using Microsoft.Purview.DataGovernance.Provisioning.Configurations;
 using Microsoft.Extensions.Options;
 using Microsoft.Purview.DataGovernance.Provisioning.Models;
 using Microsoft.Purview.DataGovernance.Loggers;
+using Polly;
 
 internal abstract class StorageManager<TConfig>
     where TConfig : ProcessingStorageConfiguration
@@ -44,15 +45,46 @@ internal abstract class StorageManager<TConfig>
 
     protected async Task DeleteStorageAccount(ResourceGroupResource resourceGroup, string accountName, CancellationToken cancellationToken)
     {
-        try
+        #region Polly Client
+        
+        var context = new Polly.Context
+                {
+                    {"retrycount", 0}
+                };
+        int maxRetryCount = 3;
+        var retryPolicy = Policy
+       .Handle<RequestFailedException>(c=>c.Status ==409)           // Specify the type of exception to handle // strategy // Exponential backoff 
+       .WaitAndRetryAsync(maxRetryCount, retryAttempt =>
+           TimeSpan.FromSeconds(Math.Pow(10, retryAttempt)),
+        onRetry: (response, delay, retryCount, context) =>
         {
-            StorageAccountResource storageAccount = await this.GetStorageAccount(resourceGroup, accountName, cancellationToken);
-            await storageAccount.DeleteAsync(WaitUntil.Completed, cancellationToken);
-        }
-        catch (RequestFailedException ex) when (ex.Status == 404)
+            if (context.TryGetValue("retrycount", out var retryObject) && retryObject is int retries)
+            {
+                retries++;
+                context["retrycount"] = retries;
+                this.logger.LogInformation($"Request failed with Message: {response.Message} ,   Waiting {delay} before next retry. Retry attempt {retries}.");
+            }
+        });
+
+        #endregion
+
+        await retryPolicy.ExecuteAsync(async ct =>
         {
-            this.logger.LogWarning("Processing storage account is already deleted", ex);
-        }
+            try
+            {
+                StorageAccountResource storageAccount = await this.GetStorageAccount(resourceGroup, accountName, cancellationToken);
+                await storageAccount.DeleteAsync(WaitUntil.Completed, cancellationToken);
+            }
+            catch (RequestFailedException ex) when (ex.Status == 404)
+            {
+                this.logger.LogWarning("Processing storage account is already deleted", ex);
+            }
+            catch (RequestFailedException ex) when (ex.Status == 409)
+            {
+                this.logger.LogWarning($"There is an operation inprogress with the storage account", ex);
+                throw;
+            }
+        }, cancellationToken);
     }
 
     protected async Task<StorageAccountResource> UpdateStorageAccount(ResourceGroupResource resourceGroup, StorageAccountRequestModel storageModel, CancellationToken cancellationToken)
