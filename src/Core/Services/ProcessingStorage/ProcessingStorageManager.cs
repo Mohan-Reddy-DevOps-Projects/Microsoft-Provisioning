@@ -29,6 +29,7 @@ using Microsoft.Purview.DataGovernance.Loggers;
 using Microsoft.Purview.DataGovernance.Provisioning.Common;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text.Json;
+using System.ComponentModel;
 
 /// <summary>
 /// Processing storage manager.
@@ -373,7 +374,7 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
         ProcessingStorageModel existingStorageModel,
         CancellationToken cancellationToken)
     {
-        StorageAccountResource storageAccount;
+        StorageAccountResource storageAccount = null;
         if (existingStorageModel == null)
         {
             storageAccountRequest.Sku = await this.DetermineDefaultSkuName(subscription, storageAccountRequest.Location, cancellationToken);
@@ -387,10 +388,17 @@ internal class ProcessingStorageManager : StorageManager<ProcessingStorageConfig
             ResourceIdentifier storageId = new(existingStorageModel.Properties.ResourceId);
             storageAccountRequest.Name = storageId.Name;
             this.logger.LogInformation($"Storage Resource Request: {JsonSerializer.Serialize(storageAccountRequest)}");
-
-            storageAccount = await this.UpdateStorageAccount(resourceGroup, storageAccountRequest, cancellationToken);
+            try
+            {
+                storageAccount = await this.UpdateStorageAccount(resourceGroup, storageAccountRequest, cancellationToken);
+            }
+            catch (RequestFailedException e) when (e.ErrorCode == "SkuUpdateNotAvailable")
+            {
+                // Adding the  logic to handle the SKU update failure because of the resource unaviability then failling back to StandardLRS
+                this.logger.LogWarning($"SkuUpdateNotAvailable exception occurred while CreateOrUpdateStorageResource account with sku{storageAccountRequest.Sku} from {existingStorageModel.Properties.Sku}, " +
+                    $" skipping the update considering the sku avialibility constraint");
+            }
         }
-
         return (storageAccount, existingStorageModel != null);
     }
 
