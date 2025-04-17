@@ -15,7 +15,7 @@ parameters:
 - name: regionExceptions
   type: string
   displayName: Comma-delimited list of regions to exclude from deployment - enter "none" if there are none
-  default: 'none'
+  default: 'norwayeast,westus3'
 
 - name: expediteRollout
   displayName: Expedite Rollout -  use when you need to rapidly deploy a hotfix. This sets the rollout type to "emergency" and miminizes the validation waiting time between tiers.  
